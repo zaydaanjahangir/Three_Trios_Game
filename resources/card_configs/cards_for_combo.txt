@@ -1,0 +1,10 @@
+CardA 5 5 5 5
+CardB 2 2 2 2
+CardC 7 7 7 7
+CardD 4 4 4 4
+CardE 6 6 6 6
+CardF 3 3 3 3
+CardG 8 8 8 8
+CardH 1 1 1 1
+CardI 9 9 9 9
+CardJ A A A A

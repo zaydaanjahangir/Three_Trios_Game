@@ -1,0 +1,3 @@
+FireDragon 5 3 7 6
+WaterSerpent 4 6 2 8
+EarthGolem 7 5 3 4

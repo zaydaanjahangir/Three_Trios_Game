@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="391b2567-af37-4c35-bf97-3d34d62cc282" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/resources/card_configs/cards1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/card_configs/cards2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/card_configs/cards3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/card_configs/cards_for_combo.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/card_configs/cards_invalid_format.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/card_configs/cards_invalid_values.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/card_configs/cards_too_few.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/card_configs/cards_too_few_fields.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/card_configs/cards_too_many_fields.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/grid_configs/grid1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/grid_configs/grid2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/grid_configs/grid3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/grid_configs/grid4.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/grid_configs/grid_invalid_chars.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/grid_configs/grid_negative_dimensions.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/grid_configs/grid_row_length_mismatch.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Card.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/CardFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/CardFileReader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/CardFileReaderImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Cell.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/CellImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/CellType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Direction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/GameMode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/GameModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/GameModelFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Grid.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/GridFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/GridFileReader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/GridFileReaderImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Player.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/PlayerImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/StandardCard.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/StandardGrid.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/ThreeTriosGameModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Value.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/TextView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/model/FileReaderTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/model/ThreeTriosGameModelTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/view/TextViewTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2oXekvUL2wxdPpSmSNwIqdidNU5" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/zayj/Documents/cs3500/OOD_HW6&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="391b2567-af37-4c35-bf97-3d34d62cc282" name="Changes" comment="" />
+      <created>1731020493928</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1731020493928</updated>
+      <workItem from="1731020495033" duration="6000" />
+      <workItem from="1731020507813" duration="56000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

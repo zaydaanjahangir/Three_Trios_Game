@@ -1,0 +1,6 @@
+FireDragon 5 3 7 6
+WaterSerpent 4 6 2 8
+EarthGolem 7 5 3 4
+WindSpirit 2 8 6 5
+LightningEagle 6 4 8 3
+ShadowWolf 3 7 5 6

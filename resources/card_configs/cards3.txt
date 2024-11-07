@@ -1,0 +1,14 @@
+FireDragon 5 3 7 6
+WaterSerpent 4 6 2 8
+EarthGolem 7 5 3 4
+WindSpirit 2 8 6 5
+LightningEagle 6 4 8 3
+ShadowWolf 3 7 5 6
+SolarPhoenix 8 2 7 5
+LunarRabbit 4 9 3 2
+StoneGiant 6 5 4 7
+MysticUnicorn 7 A 5 3
+ForestSprite 5 6 4 5
+OceanLeviathan A 3 7 6
+DesertScorpion 6 7 3 4
+ThunderDragon 8 4 9 2

@@ -22,6 +22,7 @@ public class GameModelFactory {
     } else {
       throw new IllegalArgumentException("Invalid game mode: " + mode);
     }
+    throw new IllegalArgumentException("Invalid game mode: " + mode);
   }
 }
 

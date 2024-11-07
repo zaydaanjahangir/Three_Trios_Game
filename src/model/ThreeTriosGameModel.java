@@ -53,6 +53,7 @@ public class ThreeTriosGameModel implements GameModel {
     }
 
     this.currentPlayer = playerRed;
+
   }
 
 

@@ -8,6 +8,11 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
+import controller.CardFileReader;
+import controller.CardFileReaderImpl;
+import controller.GridFileReader;
+import controller.GridFileReaderImpl;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;

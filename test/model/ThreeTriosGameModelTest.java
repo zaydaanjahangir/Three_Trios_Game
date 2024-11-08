@@ -7,6 +7,11 @@ import java.io.File;
 import java.util.List;
 import java.util.Random;
 
+import controller.CardFileReader;
+import controller.CardFileReaderImpl;
+import controller.GridFileReader;
+import controller.GridFileReaderImpl;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;

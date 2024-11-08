@@ -1,6 +1,8 @@
-package model;
+package controller;
 
 import java.io.File;
+
+import model.Grid;
 
 /**
  * Interface for reading and validating grid configurations from a file.

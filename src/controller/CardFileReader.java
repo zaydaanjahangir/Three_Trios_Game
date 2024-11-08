@@ -1,7 +1,9 @@
-package model;
+package controller;
 
 import java.io.File;
 import java.util.List;
+
+import model.Card;
 
 /**
  * Reads and validates card configurations from a file.

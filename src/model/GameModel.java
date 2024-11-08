@@ -1,6 +1,7 @@
 package model;
 
 import java.io.File;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -15,11 +16,12 @@ public interface GameModel {
    * This method reads the grid and card files, validates their content, and sets up the game
    * by distributing the cards to players and preparing the grid.
    *
-   * @param gridConfig the File object pointing to the grid configuration file.
-   * @param cardConfig the File object pointing to the card database file.
-   * @throws IllegalArgumentException if the configuration files contain invalid data.
+   * @param grid takes in the created grid
+   * @param cards takes in a list of Card types
+   * @param random optional Random seed for testing
+   * @throws IllegalArgumentException thrown for any illegal deck or grid configs
    */
-  void initializeGame(File gridConfig, File cardConfig, Random random)
+  void initializeGame(Grid grid, List<Card> cards, Random random)
           throws IllegalArgumentException;
 
   /**

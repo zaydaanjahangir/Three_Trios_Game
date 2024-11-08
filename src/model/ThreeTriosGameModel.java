@@ -7,6 +7,11 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Random;
 
+import controller.CardFileReader;
+import controller.CardFileReaderImpl;
+import controller.GridFileReader;
+import controller.GridFileReaderImpl;
+
 /**
  * Main model class for the Three Trios game.
  * Manages the game state, players, and grid.
@@ -21,16 +26,13 @@ public class ThreeTriosGameModel implements GameModel {
   private Player currentPlayer;
 
   @Override
-  public void initializeGame(File gridConfig, File cardConfig, Random random)
+  public void initializeGame(Grid grid, List<Card> cards, Random random)
           throws IllegalArgumentException {
-    GridFileReader gridReader = new GridFileReaderImpl();
-    this.grid = gridReader.readGrid(gridConfig);
+    this.grid = grid;
+
     int totalCardCells = grid.getNumberOfCardCells();
-
-    CardFileReader cardReader = new CardFileReaderImpl();
-    List<Card> cards = cardReader.readCards(cardConfig);
-
     int requiredCardCount = totalCardCells + 1;
+
     if (cards.size() < requiredCardCount) {
       throw new IllegalArgumentException("Insufficient number of cards. Required: "
               + requiredCardCount + ", but found: " + cards.size());
@@ -45,6 +47,8 @@ public class ThreeTriosGameModel implements GameModel {
     this.playerRed = new PlayerImpl("Red");
     this.playerBlue = new PlayerImpl("Blue");
     int cardsPerPlayer = (totalCardCells + 1) / 2;
+
+
     for (int i = 0; i < cardsPerPlayer; i++) {
       playerRed.addCardToHand(cards.get(i));
     }
@@ -53,8 +57,8 @@ public class ThreeTriosGameModel implements GameModel {
     }
 
     this.currentPlayer = playerRed;
-
   }
+
 
 
   @Override

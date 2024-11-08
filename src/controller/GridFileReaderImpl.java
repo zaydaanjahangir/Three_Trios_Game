@@ -1,8 +1,13 @@
-package model;
+package controller;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
+import model.Cell;
+import model.CellImpl;
+import model.Grid;
+import model.GridFactory;
 
 /**
  * Reads and parses grid data from a configuration file.

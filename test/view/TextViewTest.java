@@ -10,6 +10,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.Random;
 
+import controller.CardFileReader;
+import controller.CardFileReaderImpl;
+import controller.GridFileReader;
+import controller.GridFileReaderImpl;
 import model.Card;
 import model.GameMode;
 import model.GameModel;
@@ -35,14 +39,20 @@ public class TextViewTest {
   private File cardFile;
   private Random random;
 
+  private static final String GRID_FILE_PATH = "resources/grid_configs/grid1.txt";
+  private static final String CARD_FILE_PATH = "resources/card_configs/cards3.txt";
+
   @Before
   public void setUp() {
     model = GameModelFactory.createGameModel(GameMode.PLAYER_VS_PLAYER);
     view = new TextView(model);
-    gridFile = getResourceFile("grid_configs/grid1.txt");
-    cardFile = getResourceFile("card_configs/cards3.txt");
     random = new Random(100);
-    model.initializeGame(gridFile, cardFile, random);
+
+    GridFileReader gridReader = new GridFileReaderImpl();
+    CardFileReader cardReader = new CardFileReaderImpl();
+    Grid grid = gridReader.readGrid(new File(GRID_FILE_PATH));
+    List<Card> cards = cardReader.readCards(new File(CARD_FILE_PATH));
+    model.initializeGame(grid, cards, random);
   }
 
   private File getResourceFile(String path) {
@@ -233,11 +243,12 @@ public class TextViewTest {
    */
   @Test
   public void testGameOverWithWinAndCombo() {
-    gridFile = getResourceFile("grid_configs/grid1.txt");
-    cardFile = getResourceFile("card_configs/cards_for_combo.txt");
-
+    GridFileReader gridReader = new GridFileReaderImpl();
+    CardFileReader cardReader = new CardFileReaderImpl();
+    Grid griddy = gridReader.readGrid(new File("resources/grid_configs/grid1.txt"));
+    List<Card> cardy = cardReader.readCards(new File("resources/card_configs/cards_for_combo.txt"));
     random = new Random(42);
-    model.initializeGame(gridFile, cardFile, random);
+    model.initializeGame(griddy, cardy, random);
 
     Player redPlayer = model.getCurrentPlayer();
     Player bluePlayer = model.getOpponentPlayer();

@@ -3,17 +3,20 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Represents a player in the Three Trios game.
- * Manages the player's hand and color.
- */
-public class PlayerImpl implements Player {
-  private final String color; // "Red" or "Blue"
-  private final List<Card> hand;
+import strategy.MoveStrategy;
 
-  public PlayerImpl(String color) {
+/**
+ * Represents an AI player in the Three Trios game.
+ */
+public class AIPlayer implements Player {
+  private final String color;
+  private final List<Card> hand;
+  private final MoveStrategy strategy;
+
+  public AIPlayer(String color, MoveStrategy strategy) {
     this.color = color;
     this.hand = new ArrayList<>();
+    this.strategy = strategy;
   }
 
   @Override
@@ -31,8 +34,24 @@ public class PlayerImpl implements Player {
     return new ArrayList<>(hand);
   }
 
+  @Override
   public String getColor() {
     return color;
+  }
+
+  /**
+   * Makes a move using the assigned strategy.
+   *
+   * @param model the game model
+   */
+  public void makeMove(GameModel model) {
+    Move move = strategy.determineMove(model, this);
+    if (move != null && hand.contains(move.getCard())) {
+      model.placeCard(this, move.getCard(), move.getRow(), move.getCol());
+    } else {
+      // Handle no valid move scenario
+      // For example, pass the turn or make a default move
+    }
   }
 
   @Override
@@ -47,12 +66,9 @@ public class PlayerImpl implements Player {
     return false;
   }
 
-
-
   @Override
   public int hashCode() {
     return color.hashCode();
   }
 
 }
-

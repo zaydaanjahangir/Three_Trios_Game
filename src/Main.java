@@ -1,4 +1,12 @@
 import controller.ThreeTriosController;
+import model.AIPlayer;
+import model.GameModel;
+import model.Player;
+import model.PlayerImpl;
+import model.ThreeTriosGameModel;
+import strategy.FlipMaxStrategy;
+import strategy.MoveStrategy;
+
 import java.util.Random;
 
 /**
@@ -13,6 +21,18 @@ public class Main {
 
     // Create the controller, which initializes the model and starts the view
     ThreeTriosController controller = new ThreeTriosController(gridConfigPath, cardConfigPath, random);
+    // In your controller or main method
+
+    // Create players
+    Player playerRed = new PlayerImpl("Red"); // Human player
+    MoveStrategy aiStrategy = new FlipMaxStrategy();
+    Player playerBlue = new AIPlayer("Blue", aiStrategy); // AI player
+
+    // Initialize the model
+//    GameModel model = new ThreeTriosGameModel(playerRed, playerBlue);
+//    model.initializeGame(grid, cards, random);
+
   }
-}
+
+
 }

@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 /**
  * Read-only interface for the Three Trios game model.
  * Contains observation methods to inspect the state of the game without modification.
@@ -41,5 +43,17 @@ public interface ReadOnlyGameModel {
    * @return The Player representing the opposing player from the current player
    */
   Player getOpponentPlayer();
+
+  // New Methods added in Assignment 6
+
+  int getGridRows();
+  int getGridCols();
+  Cell getCellAt(int row, int col);
+  List<Card> getPlayerHand(Player player);
+  Player getCardOwnerAt(int row, int col);
+  boolean isLegalMove(Player player, int row, int col);
+  int getPotentialFlips(Player player, Card card, int row, int col);
+  int getPlayerScore(Player player);
+
 
 }

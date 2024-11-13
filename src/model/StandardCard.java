@@ -29,9 +29,31 @@ public class StandardCard implements Card {
 
   @Override
   public boolean compareAgainst(Card opponent, Direction direction) {
-    // Implement comparison logic
-    return false;
+    Value thisValue;
+    Value opponentValue;
+    switch (direction) {
+      case NORTH:
+        thisValue = this.getNorthValue();
+        opponentValue = opponent.getSouthValue();
+        break;
+      case SOUTH:
+        thisValue = this.getSouthValue();
+        opponentValue = opponent.getNorthValue();
+        break;
+      case EAST:
+        thisValue = this.getEastValue();
+        opponentValue = opponent.getWestValue();
+        break;
+      case WEST:
+        thisValue = this.getWestValue();
+        opponentValue = opponent.getEastValue();
+        break;
+      default:
+        throw new IllegalArgumentException("Invalid direction");
+    }
+    return thisValue.getIntValue() > opponentValue.getIntValue();
   }
+
 
   @Override
   public String getName() {

@@ -11,6 +11,7 @@ import controller.CardFileReader;
 import controller.CardFileReaderImpl;
 import controller.GridFileReader;
 import controller.GridFileReaderImpl;
+import view.TextView;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -29,6 +30,9 @@ public class ThreeTriosGameModelTest {
   private Player playerRed;
   private Player playerBlue;
 
+  private static final String GRID_FILE_PATH = "resources/grid_configs/grid1.txt";
+  private static final String CARD_FILE_PATH = "resources/card_configs/cards3.txt";
+
   @Before
   public void setUp() {
     GridFileReader gridReader = new GridFileReaderImpl();
@@ -36,14 +40,10 @@ public class ThreeTriosGameModelTest {
     model = GameModelFactory.createGameModel(GameMode.PLAYER_VS_PLAYER);
     playerRed = new PlayerImpl("Red");
     playerBlue = new PlayerImpl("Blue");
-
-    ClassLoader classLoader = getClass().getClassLoader();
-    File gridFile = new File(classLoader.getResource("grid_configs/grid1.txt").getFile());
-    File cardFile = new File(classLoader.getResource("card_configs/cards3.txt").getFile());
+    Grid grid = gridReader.readGrid(new File(GRID_FILE_PATH));
+    List<Card> cards = cardReader.readCards(new File(CARD_FILE_PATH));
     Random random = new Random(100);
-    model.initializeGame(gridFile, cardFile, random);
-    grid = model.getGrid();
-    cards = cardReader.readCards(cardFile);
+    model.initializeGame(grid, cards, random);
   }
 
   @Test

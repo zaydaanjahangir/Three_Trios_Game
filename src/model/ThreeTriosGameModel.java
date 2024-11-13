@@ -4,8 +4,14 @@ import java.io.File;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+
+import javax.swing.text.Position;
 
 import controller.CardFileReader;
 import controller.CardFileReaderImpl;
@@ -41,7 +47,8 @@ public class ThreeTriosGameModel implements GameModel {
     if (random != null) {
       Collections.shuffle(cards, random);
     } else {
-      Collections.shuffle(cards);
+//      Collections.shuffle(cards);
+      System.out.println("Shuffling is currently under maintenance for testing.");
     }
 
     this.playerRed = new PlayerImpl("Red");
@@ -57,7 +64,13 @@ public class ThreeTriosGameModel implements GameModel {
     }
 
     this.currentPlayer = playerRed;
+    System.out.println("Initializing game with current player: " + currentPlayer.getColor());
   }
+
+  public void setCurrentPlayerForTest(Player player) {
+    this.currentPlayer = player;
+  }
+
 
 
 
@@ -104,6 +117,7 @@ public class ThreeTriosGameModel implements GameModel {
   @Override
   public void placeCard(Player player, Card card, int row, int col) {
     if (player != currentPlayer) {
+      System.out.println(player);
       throw new IllegalArgumentException("It's not your turn.");
     }
 
@@ -118,7 +132,12 @@ public class ThreeTriosGameModel implements GameModel {
     grid.placeCard(card, row, col, player);
     player.removeCardFromHand(card);
     executeBattlePhase(row, col);
-    currentPlayer = (currentPlayer == playerRed) ? playerBlue : playerRed;
+
+    if(currentPlayer == playerRed){
+      currentPlayer = playerBlue;
+    } else {
+      currentPlayer = playerRed;
+    }
   }
 
   @Override
@@ -220,8 +239,18 @@ public class ThreeTriosGameModel implements GameModel {
 
   @Override
   public boolean isLegalMove(Player player, int row, int col) {
-    return player == currentPlayer && grid.isPlayable(row, col);
+    boolean isPlayable = grid.isPlayable(row, col);
+    boolean isCurrentPlayer = player.equals(currentPlayer);  // Use equals for comparison
+    boolean isOccupied = grid.getCell(row, col).isOccupied();
+
+//    System.out.println("isLegalMove called for player: " + player.getColor() + " at (" + row + ", " + col + ")");
+//    System.out.println("isPlayable: " + isPlayable + ", isCurrentPlayer: " + isCurrentPlayer + ", isOccupied: " + isOccupied);
+
+    return isCurrentPlayer && isPlayable && !isOccupied;
   }
+
+
+
 
   @Override
   public int getPlayerScore(Player player) {
@@ -239,8 +268,53 @@ public class ThreeTriosGameModel implements GameModel {
 
   @Override
   public int getPotentialFlips(Player player, Card card, int row, int col) {
-    // Implement logic to calculate potential flips later
-    return -1;
+    // Check if the move is legal; if not, return 0 flips
+    if (!grid.isWithinBounds(row, col) || !grid.isPlayable(row, col) || grid.getCell(row, col).isOccupied()) {
+      return 0;
+    }
+
+    int flips = 0;
+    Player currentPlayer = player;
+
+    // Define directions: North, South, East, West
+    int[][] directions = {
+            {-1, 0}, // North
+            {1, 0},  // South
+            {0, 1},  // East
+            {0, -1}  // West
+    };
+    Direction[] dirEnums = {
+            Direction.NORTH,
+            Direction.SOUTH,
+            Direction.EAST,
+            Direction.WEST
+    };
+
+    // Check each adjacent cell
+    for (int i = 0; i < directions.length; i++) {
+      int[] dir = directions[i];
+      int adjRow = row + dir[0];
+      int adjCol = col + dir[1];
+      Direction direction = dirEnums[i];
+
+      if (grid.isWithinBounds(adjRow, adjCol)) {
+        Cell adjCell = grid.getCell(adjRow, adjCol);
+        if (adjCell != null && !adjCell.isHole() && adjCell.isOccupied()) {
+          Player adjOwner = adjCell.getOwner();
+          // If the adjacent card belongs to the opponent
+          if (!adjOwner.equals(currentPlayer)) {
+            Card adjCard = adjCell.getCard();
+            // Determine if the adjacent card should be flipped
+            boolean shouldFlip = card.compareAgainst(adjCard, direction);
+            if (shouldFlip) {
+              flips++;
+            }
+          }
+        }
+      }
+    }
+
+    return flips;
   }
 
 

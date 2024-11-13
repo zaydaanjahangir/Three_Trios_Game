@@ -53,4 +53,22 @@ public class AIPlayer implements Player {
       // For example, pass the turn or make a default move
     }
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj instanceof Player) {
+      Player other = (Player) obj;
+      return this.getColor().equals(other.getColor());
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return color.hashCode();
+  }
+
 }

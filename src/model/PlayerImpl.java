@@ -34,5 +34,25 @@ public class PlayerImpl implements Player {
   public String getColor() {
     return color;
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj instanceof Player) {
+      Player other = (Player) obj;
+      return this.getColor().equals(other.getColor());
+    }
+    return false;
+  }
+
+
+
+  @Override
+  public int hashCode() {
+    return color.hashCode();
+  }
+
 }
 

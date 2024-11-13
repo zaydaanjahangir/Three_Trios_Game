@@ -47,7 +47,11 @@ public interface GameModel extends ReadOnlyGameModel{
    */
   void executeBattlePhase(int row, int col);
 
-
+  /**
+   * Method used to override state for testing certain scenarios
+   * @param player Player type who's turn it needs to be for testing
+   */
+  void setCurrentPlayerForTest(Player player);
 
 
 

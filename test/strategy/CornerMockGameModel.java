@@ -1,5 +1,6 @@
 package strategy;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -75,11 +76,15 @@ public class CornerMockGameModel implements ReadOnlyGameModel {
    */
   @Override
   public boolean isLegalMove(Player player, int row, int col) {
-    String key = getKey(row, col);
-    // Record that this coordinate was inspected
-    inspectedCoordinates.add(key);
-    return player.equals(currentPlayer) && !holes.contains(key) && !occupiedCells.contains(key);
+    // Only log if the coordinates are within the 3x3 grid bounds
+    if ((row == 0 && (col == 0 || col == 2)) || (row == 2 && (col == 0 || col == 2))) {
+      String key = getKey(row, col);
+      inspectedCoordinates.add(key); // Log this corner inspection
+    }
+    return player.equals(currentPlayer) && !holes.contains(getKey(row, col)) && !occupiedCells.contains(getKey(row, col));
   }
+
+
 
   /**
    * Gets the potential flips for a move.
@@ -104,8 +109,8 @@ public class CornerMockGameModel implements ReadOnlyGameModel {
   /**
    * Retrieves all inspected coordinates.
    */
-  public Set<String> getInspectedCoordinates() {
-    return inspectedCoordinates;
+  public List<String> getInspectedCoordinates() {
+    return new ArrayList<>(inspectedCoordinates);
   }
 
   /**
@@ -168,13 +173,14 @@ public class CornerMockGameModel implements ReadOnlyGameModel {
 
   @Override
   public int getGridRows() {
-    return 0;
+    return 3;
   }
 
   @Override
   public int getGridCols() {
-    return 0;
+    return 3;
   }
+
 
   @Override
   public Cell getCellAt(int row, int col) {

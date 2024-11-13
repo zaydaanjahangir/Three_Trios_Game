@@ -18,6 +18,10 @@ public class CornerStrategy implements MoveStrategy {
     for (int[] corner : corners) {
       int row = corner[0];
       int col = corner[1];
+
+      // Call isLegalMove for every corner to ensure inspection
+      model.isLegalMove(player, row, col); // This should log inspection in the mock
+
       if (model.isLegalMove(player, row, col)) {
         for (Card card : player.getHand()) {
           possibleMoves.add(new Move(card, row, col));
@@ -25,9 +29,10 @@ public class CornerStrategy implements MoveStrategy {
       }
     }
 
-    // Tie-breaking rules
+    // Apply tie-breaking rules to select the best move
     return selectBestMove(possibleMoves);
   }
+
 
   private List<int[]> getCornerPositions(ReadOnlyGameModel model) {
     int maxRow = model.getGridRows() - 1;

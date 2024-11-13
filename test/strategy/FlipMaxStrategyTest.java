@@ -160,7 +160,7 @@ public class FlipMaxStrategyTest {
   @Test
   public void testOccupiedCellsAndHoles() {
     // Using grid config with holes
-    grid = gridReader.readGrid(new File("resources/grid_configs/grid5.txt"));
+    grid = gridReader.readGrid(new File("resources/grid_configs/grid6.txt"));
 
     aiPlayer.addCardToHand(cards.get(0)); // FireDragon
     aiPlayer.addCardToHand(cards.get(1)); // WaterSerpent

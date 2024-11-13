@@ -100,8 +100,21 @@ Some key methods include: `render`, which calls helper methods to format the gri
   `TextViewTest` to make sure everything’s working as expected. The tests cover the main components
   and validate key logic.
 
-### Future Changes
-- Since we want to provide extensibility for the ability to have an AI player we hope to abstract
-  out some core functionality in an abstract class that both the current classes and future AI Player
-  class would both use de-duplicating our code. 
+
+## Changes for Part 2
+
+- **Refactored Model into Read-Only and Mutable Interfaces:**
+  - Created `ReadonlyThreeTriosModel` interface containing all observation methods.
+  - Updated `GameModel` to extend `ReadonlyThreeTriosModel` and include only mutator methods.
+  - This ensures the view cannot modify the model directly.
+
+- **Added Missing Functionality:**
+  - Implemented methods to get grid size, cell contents, player's hand, card owner at a cell, check 
+  move legality, calculate potential flips, and get player's score.
+  - These methods are necessary for the view to display game information and for strategies to make
+  decisions.
+
+- **Implemented `compareAgainst` Method in `StandardCard`:**
+  - Completed the comparison logic to enable the battle phase and strategy calculations.
+
 

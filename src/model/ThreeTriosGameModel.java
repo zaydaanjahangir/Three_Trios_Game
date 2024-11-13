@@ -188,5 +188,60 @@ public class ThreeTriosGameModel implements GameModel {
     return (currentPlayer == playerRed) ? playerBlue : playerRed;
   }
 
+  @Override
+  public int getGridRows() {
+    return grid.getRows();
+  }
+
+  @Override
+  public int getGridCols() {
+    return grid.getCols();
+  }
+
+  @Override
+  public Cell getCellAt(int row, int col) {
+    return grid.getCell(row, col);
+  }
+
+  @Override
+  public List<Card> getPlayerHand(Player player) {
+    return player.getHand();
+  }
+
+  @Override
+  public Player getCardOwnerAt(int row, int col) {
+    Cell cell = grid.getCell(row, col);
+    if (cell.isOccupied()) {
+      return cell.getOwner();
+    } else {
+      return null; // maybe throw an exception
+    }
+  }
+
+  @Override
+  public boolean isLegalMove(Player player, int row, int col) {
+    return player == currentPlayer && grid.isPlayable(row, col);
+  }
+
+  @Override
+  public int getPlayerScore(Player player) {
+    int score = player.getHand().size();
+    for (int row = 0; row < grid.getRows(); row++) {
+      for (int col = 0; col < grid.getCols(); col++) {
+        Cell cell = grid.getCell(row, col);
+        if (cell.isOccupied() && cell.getOwner() == player) {
+          score++;
+        }
+      }
+    }
+    return score;
+  }
+
+  @Override
+  public int getPotentialFlips(Player player, Card card, int row, int col) {
+    // Implement logic to calculate potential flips later
+    return -1;
+  }
+
 
 }

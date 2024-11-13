@@ -375,6 +375,4 @@ public class FlipMaxStrategyTest {
     // Move should be null
     assertNull( move);
   }
-
-
 }

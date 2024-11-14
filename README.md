@@ -103,10 +103,10 @@ Some key methods include: `render`, which calls helper methods to format the gri
 
 ## Changes for Part 2
 
-- **Refactored Model into Read-Only and Mutable Interfaces:**
-  - Created `ReadonlyThreeTriosModel` interface containing all observation methods.
-  - Updated `GameModel` to extend `ReadonlyThreeTriosModel` and include only mutator methods.
-  - This ensures the view cannot modify the model directly.
+- **Moved File Readers to Controller:**
+  - Migrated `CardFileReader`, `CardFileReaderImpl`, `GridFileReader`, and `GridFileReaderImpl` to 
+    controller to better fit with the MVC definition
+  - This ensures the jobs of the model and controller are separate and modular.
 
 - **Added Missing Functionality:**
   - Implemented methods to get grid size, cell contents, player's hand, card owner at a cell, check 

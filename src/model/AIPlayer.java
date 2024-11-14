@@ -50,7 +50,7 @@ public class AIPlayer implements Player {
       model.placeCard(this, move.getCard(), move.getRow(), move.getCol());
     } else {
       // Handle no valid move scenario
-      // For example, pass the turn or make a default move
+      System.out.println("No move was made");
     }
   }
 

@@ -1,4 +1,3 @@
-// File: strategy/MockThreeTriosModel.java
 package strategy;
 
 import model.*;

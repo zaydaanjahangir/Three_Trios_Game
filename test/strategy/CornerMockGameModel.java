@@ -25,6 +25,9 @@ public class CornerMockGameModel implements ReadOnlyGameModel {
   private final Set<String> inspectedCoordinates;
   private final Set<String> potentialFlipsMap;
 
+  /**
+   * Constructor for the CornerMockGameModel class.
+   */
   public CornerMockGameModel() {
     this.holes = new HashSet<>();
     this.occupiedCells = new HashSet<>();
@@ -36,7 +39,7 @@ public class CornerMockGameModel implements ReadOnlyGameModel {
    * Sets the AI and opponent players for the mock model.
    */
   public void setPlayers(Player aiPlayer, Player opponent) {
-    this.currentPlayer = aiPlayer; // Set the initial player for testing
+    this.currentPlayer = aiPlayer;
   }
 
   /**
@@ -64,11 +67,10 @@ public class CornerMockGameModel implements ReadOnlyGameModel {
   public void placeCard(Player player, Card card, int row, int col) {
     String key = getKey(row, col);
     if (holes.contains(key) || occupiedCells.contains(key)) {
-      throw new IllegalArgumentException("Cannot place card at occupied or hole position: (" + row + "," + col + ")");
+      throw new IllegalArgumentException("Cannot place card at occupied or hole position: " +
+              "(" + row + "," + col + ")");
     }
     occupiedCells.add(key);
-    // Toggle current player (assuming two-player game)
-    togglePlayer();
   }
 
   /**
@@ -76,14 +78,12 @@ public class CornerMockGameModel implements ReadOnlyGameModel {
    */
   @Override
   public boolean isLegalMove(Player player, int row, int col) {
-    // Only log if the coordinates are within the 3x3 grid bounds
     if ((row == 0 && (col == 0 || col == 2)) || (row == 2 && (col == 0 || col == 2))) {
       String key = getKey(row, col);
-      inspectedCoordinates.add(key); // Log this corner inspection
+      inspectedCoordinates.add(key); // Log the corner inspection
     }
     return player.equals(currentPlayer) && !holes.contains(getKey(row, col)) && !occupiedCells.contains(getKey(row, col));
   }
-
 
 
   /**
@@ -91,20 +91,12 @@ public class CornerMockGameModel implements ReadOnlyGameModel {
    */
   public int getPotentialFlips(Player player, Card card, int row, int col) {
     String key = getKey(row, col);
-    // Define potential flips based on the test setup
-    // For simplicity, return a fixed number or customize as needed
     if (potentialFlipsMap.contains(key)) {
-      return 2; // Example: returning 2 flips
+      return 2;
     }
     return 0;
   }
 
-  /**
-   * Retrieves a cell. (Optional: Implement if needed)
-   */
-  public Cell getCell(int row, int col) {
-    throw new UnsupportedOperationException("getCell is not supported in MockGameModel.");
-  }
 
   /**
    * Retrieves all inspected coordinates.
@@ -139,13 +131,6 @@ public class CornerMockGameModel implements ReadOnlyGameModel {
     return row + "," + col;
   }
 
-  /**
-   * Toggles the current player. Assumes two-player game.
-   */
-  private void togglePlayer() {
-    // Implement player toggling logic based on your Player implementation
-    // For simplicity, this example does nothing. Adjust as needed.
-  }
   @Override
   public boolean isGameOver() {
     return false;

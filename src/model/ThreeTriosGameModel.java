@@ -72,8 +72,6 @@ public class ThreeTriosGameModel implements GameModel {
   }
 
 
-
-
   @Override
   public boolean isGameOver() {
     return grid.isFull();
@@ -133,7 +131,7 @@ public class ThreeTriosGameModel implements GameModel {
     player.removeCardFromHand(card);
     executeBattlePhase(row, col);
 
-    if(currentPlayer == playerRed){
+    if (currentPlayer == playerRed) {
       currentPlayer = playerBlue;
     } else {
       currentPlayer = playerRed;
@@ -162,10 +160,10 @@ public class ThreeTriosGameModel implements GameModel {
               {0, -1}  // West
       };
       Direction[] dirEnums = {
-          Direction.NORTH,
-          Direction.SOUTH,
-          Direction.EAST,
-          Direction.WEST
+              Direction.NORTH,
+              Direction.SOUTH,
+              Direction.EAST,
+              Direction.WEST
       };
 
       for (int i = 0; i < directions.length; i++) {
@@ -243,13 +241,13 @@ public class ThreeTriosGameModel implements GameModel {
     boolean isCurrentPlayer = player.equals(currentPlayer);  // Use equals for comparison
     boolean isOccupied = grid.getCell(row, col).isOccupied();
 
-//    System.out.println("isLegalMove called for player: " + player.getColor() + " at (" + row + ", " + col + ")");
-//    System.out.println("isPlayable: " + isPlayable + ", isCurrentPlayer: " + isCurrentPlayer + ", isOccupied: " + isOccupied);
+//    System.out.println("isLegalMove called for player: " + player.getColor() + " at (" + row + ",
+//    " + col + ")");
+//    System.out.println("isPlayable: " + isPlayable + ", isCurrentPlayer: " + isCurrentPlayer + ",
+//    isOccupied: " + isOccupied);
 
     return isCurrentPlayer && isPlayable && !isOccupied;
   }
-
-
 
 
   @Override
@@ -268,21 +266,20 @@ public class ThreeTriosGameModel implements GameModel {
 
   @Override
   public int getPotentialFlips(Player player, Card card, int row, int col) {
-    // Check if the move is legal; if not, return 0 flips
+    // Check if the move is legal, else return 0
     if (!grid.isWithinBounds(row, col) || !grid.isPlayable(row, col) || grid.getCell(row, col).isOccupied()) {
       return 0;
     }
 
     int flips = 0;
     Player currentPlayer = player;
-
-    // Define directions: North, South, East, West
     int[][] directions = {
             {-1, 0}, // North
             {1, 0},  // South
             {0, 1},  // East
             {0, -1}  // West
     };
+
     Direction[] dirEnums = {
             Direction.NORTH,
             Direction.SOUTH,
@@ -290,7 +287,7 @@ public class ThreeTriosGameModel implements GameModel {
             Direction.WEST
     };
 
-    // Check each adjacent cell
+    // Check adjacent cells
     for (int i = 0; i < directions.length; i++) {
       int[] dir = directions[i];
       int adjRow = row + dir[0];
@@ -301,10 +298,8 @@ public class ThreeTriosGameModel implements GameModel {
         Cell adjCell = grid.getCell(adjRow, adjCol);
         if (adjCell != null && !adjCell.isHole() && adjCell.isOccupied()) {
           Player adjOwner = adjCell.getOwner();
-          // If the adjacent card belongs to the opponent
           if (!adjOwner.equals(currentPlayer)) {
             Card adjCard = adjCell.getCard();
-            // Determine if the adjacent card should be flipped
             boolean shouldFlip = card.compareAgainst(adjCard, direction);
             if (shouldFlip) {
               flips++;
@@ -313,7 +308,6 @@ public class ThreeTriosGameModel implements GameModel {
         }
       }
     }
-
     return flips;
   }
 

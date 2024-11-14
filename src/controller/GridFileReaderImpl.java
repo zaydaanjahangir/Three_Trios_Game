@@ -48,7 +48,7 @@ public class GridFileReaderImpl implements GridFileReader {
     int rows = Integer.parseInt(dimensions[0]);
     int cols = Integer.parseInt(dimensions[1]);
     validatePositiveDimensions(rows, cols);
-    return new int[] { rows, cols };
+    return new int[]{rows, cols};
   }
 
   private void validatePositiveDimensions(int rows, int cols) {
@@ -99,7 +99,8 @@ public class GridFileReaderImpl implements GridFileReader {
         return new CellImpl(false); // Card cell
       default:
         throw new IllegalArgumentException(
-                "Invalid cell character '" + cellChar + "' at row " + (row + 1) + ", column " + (col + 1));
+                "Invalid cell character '" + cellChar + "' at row " + (row + 1) + ", column "
+                        + (col + 1));
     }
   }
 }

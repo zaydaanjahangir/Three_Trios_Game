@@ -13,6 +13,12 @@ public class AIPlayer implements Player {
   private final List<Card> hand;
   private final MoveStrategy strategy;
 
+  /**
+   * AI player constructor which creates an artificial player with a set strategy.
+   *
+   * @param color    color of the player
+   * @param strategy chosen strategy which the player abides to
+   */
   public AIPlayer(String color, MoveStrategy strategy) {
     this.color = color;
     this.hand = new ArrayList<>();

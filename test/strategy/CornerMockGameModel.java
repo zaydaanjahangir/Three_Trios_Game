@@ -1,15 +1,12 @@
 package strategy;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import model.Card;
 import model.Cell;
-import model.CellImpl;
 import model.Grid;
 import model.Player;
 import model.ReadOnlyGameModel;
@@ -82,7 +79,8 @@ public class CornerMockGameModel implements ReadOnlyGameModel {
       String key = getKey(row, col);
       inspectedCoordinates.add(key); // Log the corner inspection
     }
-    return player.equals(currentPlayer) && !holes.contains(getKey(row, col)) && !occupiedCells.contains(getKey(row, col));
+    return player.equals(currentPlayer) && !holes.contains(getKey(row, col)) && !occupiedCells
+            .contains(getKey(row, col));
   }
 
 

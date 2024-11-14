@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="OOD_HW6:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/OOD_HW6_jar</output-path>
+    <root id="archive" name="OOD_HW6.jar">
+      <element id="module-output" name="OOD_HW6" />
+    </root>
+  </artifact>
+</component>

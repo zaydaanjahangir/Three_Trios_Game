@@ -7,19 +7,21 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import model.Card;
 import model.ReadOnlyGameModel;
 
+/**
+ * The view class of the ThreeTriosGame contributing the visual aspect via JPanel.
+ */
 public class ThreeTriosView {
   private final ReadOnlyGameModel model;
   private JFrame frame;
-  private JPanel gridPanel;
-  private JPanel leftHandPanel;
-  private JPanel rightHandPanel;
   private Card selectedCard;
   private CardPanel selectedCardPanel;
 
@@ -43,7 +45,7 @@ public class ThreeTriosView {
   private void setupGridPanel() {
     int rows = model.getGrid().getRows();
     int cols = model.getGrid().getCols();
-    gridPanel = new JPanel(new GridLayout(rows, cols, 0, 0));
+    JPanel gridPanel = new JPanel(new GridLayout(rows, cols, 0, 0));
 
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
@@ -68,7 +70,7 @@ public class ThreeTriosView {
     List<Card> player1 = model.getCurrentPlayer().getHand();
     List<Card> player2 = model.getOpponentPlayer().getHand();
 
-    leftHandPanel = new JPanel(new GridLayout(player1.size(), 1));
+    JPanel leftHandPanel = new JPanel(new GridLayout(player1.size(), 1));
     leftHandPanel.setPreferredSize(new Dimension(100, 50 * player1.size()));
 
     for (Card card : player1) {
@@ -79,7 +81,7 @@ public class ThreeTriosView {
     }
     frame.add(leftHandPanel, BorderLayout.WEST);
 
-    rightHandPanel = new JPanel(new GridLayout(player2.size(), 1));
+    JPanel rightHandPanel = new JPanel(new GridLayout(player2.size(), 1));
     rightHandPanel.setPreferredSize(new Dimension(100, 50 * player2.size()));
 
     for (Card card : player2) {
@@ -91,87 +93,87 @@ public class ThreeTriosView {
     frame.add(rightHandPanel, BorderLayout.EAST);
   }
 
-    private class CardClickListener extends MouseAdapter {
-      private final Card card;
-      private final CardPanel cardPanel;
+  private class CardClickListener extends MouseAdapter {
+    private final Card card;
+    private final CardPanel cardPanel;
 
-      public CardClickListener(Card card, CardPanel cardPanel) {
-        this.card = card;
-        this.cardPanel = cardPanel;
-      }
-
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        if (selectedCard == card) {
-          if (selectedCardPanel != null) {
-            selectedCardPanel.setBorder(null);
-          }
-          selectedCard = null;
-          selectedCardPanel = null;
-          System.out.println("Deselected card: " + card.getName());
-        } else {
-          if (selectedCardPanel != null) {
-            selectedCardPanel.setBorder(null);
-          }
-          selectedCard = card;
-          selectedCardPanel = cardPanel;
-          cardPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-          System.out.println("Selected card: " + card.getName());
-        }
-      }
+    public CardClickListener(Card card, CardPanel cardPanel) {
+      this.card = card;
+      this.cardPanel = cardPanel;
     }
 
-    private class CellClickListener extends MouseAdapter {
-      private final int row;
-      private final int col;
-      private final JPanel cellPanel;
-
-      public CellClickListener(int row, int col, JPanel cellPanel) {
-        this.row = row;
-        this.col = col;
-        this.cellPanel = cellPanel;
-      }
-
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        if (selectedCard != null && cellPanel.getBackground() == Color.YELLOW) {
-          cellPanel.setBackground(selectedCardPanel.getBackground());
-          cellPanel.setLayout(new BorderLayout());
-
-          JLabel northLabel = new JLabel(String.valueOf(selectedCard.getNorthValue()), JLabel.CENTER);
-          JLabel southLabel = new JLabel(String.valueOf(selectedCard.getSouthValue()), JLabel.CENTER);
-          JLabel eastLabel = new JLabel(String.valueOf(selectedCard.getEastValue()));
-          JLabel westLabel = new JLabel(String.valueOf(selectedCard.getWestValue()));
-
-          cellPanel.add(northLabel, BorderLayout.NORTH);
-          cellPanel.add(eastLabel, BorderLayout.EAST);
-          cellPanel.add(southLabel, BorderLayout.SOUTH);
-          cellPanel.add(westLabel, BorderLayout.WEST);
-
-          cellPanel.revalidate();
-          cellPanel.repaint();
-
-          System.out.println("Placed " + selectedCard.getName() + " at (" + row + ", " + col + ")");
-
-          JPanel parentPanel = (JPanel) selectedCardPanel.getParent();
-          parentPanel.remove(selectedCardPanel);
-          parentPanel.revalidate();
-          parentPanel.repaint();
-
-          selectedCard = null;
-          selectedCardPanel = null;
-        } else if (selectedCard == null) {
-          System.out.println("No card selected.");
-        } else {
-          System.out.println("Cannot place a card here.");
+    @Override
+    public void mouseClicked(MouseEvent e) {
+      if (selectedCard == card) {
+        if (selectedCardPanel != null) {
+          selectedCardPanel.setBorder(null);
         }
+        selectedCard = null;
+        selectedCardPanel = null;
+        System.out.println("Deselected card: " + card.getName());
+      } else {
+        if (selectedCardPanel != null) {
+          selectedCardPanel.setBorder(null);
+        }
+        selectedCard = card;
+        selectedCardPanel = cardPanel;
+        cardPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        System.out.println("Selected card: " + card.getName());
       }
-    }
-
-    public void setVisible(boolean visible) {
-      frame.setVisible(visible);
     }
   }
+
+  private class CellClickListener extends MouseAdapter {
+    private final int row;
+    private final int col;
+    private final JPanel cellPanel;
+
+    public CellClickListener(int row, int col, JPanel cellPanel) {
+      this.row = row;
+      this.col = col;
+      this.cellPanel = cellPanel;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+      if (selectedCard != null && cellPanel.getBackground() == Color.YELLOW) {
+        cellPanel.setBackground(selectedCardPanel.getBackground());
+        cellPanel.setLayout(new BorderLayout());
+
+        JLabel northLabel = new JLabel(String.valueOf(selectedCard.getNorthValue()), JLabel.CENTER);
+        JLabel southLabel = new JLabel(String.valueOf(selectedCard.getSouthValue()), JLabel.CENTER);
+        JLabel eastLabel = new JLabel(String.valueOf(selectedCard.getEastValue()));
+        JLabel westLabel = new JLabel(String.valueOf(selectedCard.getWestValue()));
+
+        cellPanel.add(northLabel, BorderLayout.NORTH);
+        cellPanel.add(eastLabel, BorderLayout.EAST);
+        cellPanel.add(southLabel, BorderLayout.SOUTH);
+        cellPanel.add(westLabel, BorderLayout.WEST);
+
+        cellPanel.revalidate();
+        cellPanel.repaint();
+
+        System.out.println("Placed " + selectedCard.getName() + " at (" + row + ", " + col + ")");
+
+        JPanel parentPanel = (JPanel) selectedCardPanel.getParent();
+        parentPanel.remove(selectedCardPanel);
+        parentPanel.revalidate();
+        parentPanel.repaint();
+
+        selectedCard = null;
+        selectedCardPanel = null;
+      } else if (selectedCard == null) {
+        System.out.println("No card selected.");
+      } else {
+        System.out.println("Cannot place a card here.");
+      }
+    }
+  }
+
+  public void setVisible(boolean visible) {
+    frame.setVisible(visible);
+  }
+}
 
 
 

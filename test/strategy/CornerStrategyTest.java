@@ -152,7 +152,8 @@ public class CornerStrategyTest {
     mockModel.setCurrentPlayer(aiPlayer);
 
     Move move = strategy.determineMove(mockModel, aiPlayer);
-    assertNotNull("Strategy should return a move when multiple cards can be played to a corner", move);
+    assertNotNull("Strategy should return a move when multiple cards can be played to a " +
+            "corner", move);
 
     // Should select (0,0) with the first card in hand (fireDragon)
     assertEquals(0, move.getRow());
@@ -279,25 +280,25 @@ public class CornerStrategyTest {
             .contains("2,2"));
   }
 
-  /**
-   * Tests when the hand has illegal cards
-   */
-//  @Test
-//  public void testHandContainsOnlyUnplayableCards() {
-////    Card unplayableCard1 = new StandardCard("Unplayable1", 100, 100, 100, 100);
-////    Card unplayableCard2 = new StandardCard("Unplayable2", 100, 100, 100, 100);
-////    aiPlayer.addCardToHand(unplayableCard1);
-////    aiPlayer.addCardToHand(unplayableCard2);
 
-//    mockModel.setPotentialFlips(0, 0, -1);
-//    mockModel.setPotentialFlips(0, 2, -1);
-//    mockModel.setPotentialFlips(2, 0, -1);
-//    mockModel.setPotentialFlips(2, 2, -1);
-//    mockModel.setCurrentPlayer(aiPlayer);
-//
-//    Move move = strategy.determineMove(mockModel, aiPlayer);
-//    assertNull(move);
-//  }
+
+
+  //  @Test
+  //  public void testHandContainsOnlyUnplayableCards() {
+  ////    Card unplayableCard1 = new StandardCard("Unplayable1", 100, 100, 100, 100);
+  ////    Card unplayableCard2 = new StandardCard("Unplayable2", 100, 100, 100, 100);
+  ////    aiPlayer.addCardToHand(unplayableCard1);
+  ////    aiPlayer.addCardToHand(unplayableCard2);
+
+  //    mockModel.setPotentialFlips(0, 0, -1);
+  //    mockModel.setPotentialFlips(0, 2, -1);
+  //    mockModel.setPotentialFlips(2, 0, -1);
+  //    mockModel.setPotentialFlips(2, 2, -1);
+  //    mockModel.setCurrentPlayer(aiPlayer);
+  //
+  //    Move move = strategy.determineMove(mockModel, aiPlayer);
+  //    assertNull(move);
+  //  }
 
   /**
    * Tests when corner placement can flip cards.

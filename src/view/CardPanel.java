@@ -12,6 +12,10 @@ import model.Card;
  * A custom JPanel to display a card with its values on the north, south, east, and west sides.
  */
 public class CardPanel extends JPanel {
+  /**
+   * Constructor for the CardPanel class which sets everything up.
+   * @param card StandardCard.
+   */
   public CardPanel(Card card) {
     setLayout(new GridBagLayout());
     setBackground(Color.WHITE);

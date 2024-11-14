@@ -1,22 +1,11 @@
 package model;
 
-import java.io.File;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
-import javax.swing.text.Position;
-
-import controller.CardFileReader;
-import controller.CardFileReaderImpl;
-import controller.GridFileReader;
-import controller.GridFileReaderImpl;
 
 /**
  * Main model class for the Three Trios game.
@@ -47,7 +36,6 @@ public class ThreeTriosGameModel implements GameModel {
     if (random != null) {
       Collections.shuffle(cards, random);
     } else {
-//      Collections.shuffle(cards);
       System.out.println("Shuffling is currently under maintenance for testing.");
     }
 
@@ -160,10 +148,10 @@ public class ThreeTriosGameModel implements GameModel {
               {0, -1}  // West
       };
       Direction[] dirEnums = {
-              Direction.NORTH,
-              Direction.SOUTH,
-              Direction.EAST,
-              Direction.WEST
+          Direction.NORTH,
+          Direction.SOUTH,
+          Direction.EAST,
+          Direction.WEST
       };
 
       for (int i = 0; i < directions.length; i++) {
@@ -241,10 +229,10 @@ public class ThreeTriosGameModel implements GameModel {
     boolean isCurrentPlayer = player.equals(currentPlayer);  // Use equals for comparison
     boolean isOccupied = grid.getCell(row, col).isOccupied();
 
-//    System.out.println("isLegalMove called for player: " + player.getColor() + " at (" + row + ",
-//    " + col + ")");
-//    System.out.println("isPlayable: " + isPlayable + ", isCurrentPlayer: " + isCurrentPlayer + ",
-//    isOccupied: " + isOccupied);
+    //System.out.println("isLegalMove called for player: " + player.getColor() + " at (" + row + ",
+    //" + col + ")");
+    //System.out.println("isPlayable: " + isPlayable + ", isCurrentPlayer: " + isCurrentPlayer + ",
+    //isOccupied: " + isOccupied);
 
     return isCurrentPlayer && isPlayable && !isOccupied;
   }
@@ -267,7 +255,8 @@ public class ThreeTriosGameModel implements GameModel {
   @Override
   public int getPotentialFlips(Player player, Card card, int row, int col) {
     // Check if the move is legal, else return 0
-    if (!grid.isWithinBounds(row, col) || !grid.isPlayable(row, col) || grid.getCell(row, col).isOccupied()) {
+    if (!grid.isWithinBounds(row, col) || !grid.isPlayable(row, col) || grid.getCell(row, col)
+            .isOccupied()) {
       return 0;
     }
 
@@ -281,10 +270,10 @@ public class ThreeTriosGameModel implements GameModel {
     };
 
     Direction[] dirEnums = {
-            Direction.NORTH,
-            Direction.SOUTH,
-            Direction.EAST,
-            Direction.WEST
+        Direction.NORTH,
+        Direction.SOUTH,
+        Direction.EAST,
+        Direction.WEST
     };
 
     // Check adjacent cells

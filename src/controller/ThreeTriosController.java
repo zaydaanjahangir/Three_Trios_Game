@@ -6,14 +6,23 @@ import model.GameMode;
 import model.Grid;
 import model.Card;
 import view.ThreeTriosView;
+
 import java.io.File;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Controller class which delegates the functions between the model and the view.
+ */
 public class ThreeTriosController {
-  private final GameModel model;
-  private final ThreeTriosView view;
 
+  /**
+   * Constructor for the controller which initializes the game and starts the view.
+   *
+   * @param gridConfigPath path to grid configuration file
+   * @param cardConfigPath path to card configuration file
+   * @param random         choice for a random seed, if null deck is not shuffled
+   */
   public ThreeTriosController(String gridConfigPath, String cardConfigPath, Random random) {
     GridFileReader gridReader = new GridFileReaderImpl();
     Grid grid = gridReader.readGrid(new File(gridConfigPath));
@@ -21,15 +30,9 @@ public class ThreeTriosController {
     CardFileReader cardReader = new CardFileReaderImpl();
     List<Card> cards = cardReader.readCards(new File(cardConfigPath));
 
-    this.model = GameModelFactory.createGameModel(GameMode.PLAYER_VS_PLAYER);
+    GameModel model = GameModelFactory.createGameModel(GameMode.PLAYER_VS_PLAYER);
     model.initializeGame(grid, cards, random);
-
-    // Create the view, passing in the read-only model
-    this.view = new ThreeTriosView(model);
-
-    // Start the view (e.g., make the GUI visible)
+    ThreeTriosView view = new ThreeTriosView(model);
     view.setVisible(true);
   }
-
-  // Future methods for handling user inputs and game logic will be added here
 }

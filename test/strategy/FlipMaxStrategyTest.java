@@ -4,17 +4,32 @@ import controller.CardFileReader;
 import controller.CardFileReaderImpl;
 import controller.GridFileReader;
 import controller.GridFileReaderImpl;
-import model.*;
+import model.AIPlayer;
+import model.Card;
+import model.GameMode;
+import model.GameModel;
+import model.GameModelFactory;
+import model.Grid;
+import model.Move;
+import model.PlayerImpl;
+
+
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.sql.SQLOutput;
 import java.util.List;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+
+/**
+ * Class testing the Flip Maximising strategy which prioritizes immediate card flips.
+ */
 public class FlipMaxStrategyTest {
 
   private GameModel model;
@@ -78,26 +93,30 @@ public class FlipMaxStrategyTest {
     List<Card> oppHand = opponent.getHand();
 
     System.out.println("AI Cards:");
-    for(int i = 0; i<aiHand.size(); i++){
+    for (int i = 0; i < aiHand.size(); i++) {
       System.out.println(aiHand.get(i).getName());
     }
     System.out.println("\nOpponent Cards:");
-    for(int i = 0; i< oppHand.size(); i++){
+    for (int i = 0; i < oppHand.size(); i++) {
       System.out.println(oppHand.get(i).getName());
     }
 
     model.setCurrentPlayerForTest(opponent);
 
     // Place cards
-    System.out.println("Before placing card, current player is: " + model.getCurrentPlayer().getColor());
+    System.out.println("Before placing card, current player is: " + model.getCurrentPlayer()
+            .getColor());
     model.placeCard(opponent, opponent.getHand().get(0), 0, 1);
-    System.out.println("After opponent's placement, current player: " + model.getCurrentPlayer().getColor());
+    System.out.println("After opponent's placement, current player: " + model.getCurrentPlayer()
+            .getColor());
     System.out.println("");
 
     model.setCurrentPlayerForTest(opponent);
-    System.out.println("Before placing card, current player is: " + model.getCurrentPlayer().getColor());
+    System.out.println("Before placing card, current player is: " + model.getCurrentPlayer()
+            .getColor());
     model.placeCard(opponent, oppHand.get(1), 1, 0);
-    System.out.println("After opponent's placement, current player: " + model.getCurrentPlayer().getColor());
+    System.out.println("After opponent's placement, current player: " + model.getCurrentPlayer()
+            .getColor());
     System.out.println("");
 
     Move move = strategy.determineMove(model, aiPlayer);
@@ -173,8 +192,8 @@ public class FlipMaxStrategyTest {
     assertNotNull(move);
 
     // The strategy should avoid (0,0) and (1,0)
-    assertFalse( move.getRow() == 0 && move.getCol() == 0);
-    assertFalse( move.getRow() == 1 && move.getCol() == 0);
+    assertFalse(move.getRow() == 0 && move.getCol() == 0);
+    assertFalse(move.getRow() == 1 && move.getCol() == 0);
   }
 
 
@@ -211,7 +230,7 @@ public class FlipMaxStrategyTest {
 
     // The AI should select an edge, non-corner cell to flip maximum cards
     boolean isEdgeNonCorner = (move.getRow() == 1 && move.getCol() == 1);
-    assertTrue( isEdgeNonCorner);
+    assertTrue(isEdgeNonCorner);
   }
 
 
@@ -247,8 +266,9 @@ public class FlipMaxStrategyTest {
     assertEquals(1, move.getRow());
     assertEquals(1, move.getCol());
 
-    int potentialFlips = model.getPotentialFlips(aiPlayer, move.getCard(), move.getRow(), move.getCol());
-    assertTrue( potentialFlips >= 2);
+    int potentialFlips = model.getPotentialFlips(aiPlayer, move.getCard(), move.getRow(),
+            move.getCol());
+    assertTrue(potentialFlips >= 2);
   }
 
 
@@ -289,8 +309,9 @@ public class FlipMaxStrategyTest {
     assertEquals(1, move.getRow());
     assertEquals(1, move.getCol());
 
-    int potentialFlips = model.getPotentialFlips(aiPlayer, move.getCard(), move.getRow(), move.getCol());
-    assertTrue( potentialFlips > 2);
+    int potentialFlips = model.getPotentialFlips(aiPlayer, move.getCard(), move.getRow(),
+            move.getCol());
+    assertTrue(potentialFlips > 2);
   }
 
 
@@ -343,7 +364,7 @@ public class FlipMaxStrategyTest {
 
     // Run strategy with single card
     Move moveSingleCard = strategy.determineMove(model, aiPlayer);
-    assertNotNull( moveSingleCard);
+    assertNotNull(moveSingleCard);
   }
 
 
@@ -362,7 +383,8 @@ public class FlipMaxStrategyTest {
         if (!model.getCellAt(row, col).isHole()) {
           opponent.addCardToHand(cards.get(cardIndex % cards.size()));
           model.setCurrentPlayerForTest(opponent);
-          model.placeCard(opponent, opponent.getHand().get(opponent.getHand().size() - 1), row, col);
+          model.placeCard(opponent, opponent.getHand().get(opponent.getHand().size() - 1), row,
+                  col);
           cardIndex++;
         }
       }
@@ -373,6 +395,6 @@ public class FlipMaxStrategyTest {
     Move move = strategy.determineMove(model, aiPlayer);
 
     // Move should be null
-    assertNull( move);
+    assertNull(move);
   }
 }

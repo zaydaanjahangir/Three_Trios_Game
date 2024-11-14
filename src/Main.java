@@ -1,9 +1,7 @@
 import controller.ThreeTriosController;
 import model.AIPlayer;
-import model.GameModel;
 import model.Player;
 import model.PlayerImpl;
-import model.ThreeTriosGameModel;
 import strategy.FlipMaxStrategy;
 import strategy.MoveStrategy;
 
@@ -13,6 +11,12 @@ import java.util.Random;
  * Main Class to start playing the game outside of the testing suite.
  */
 public class Main {
+
+  /**
+   * Main method which starts everything.
+   *
+   * @param args args
+   */
   public static void main(String[] args) {
     // Paths to your configuration files
     String gridConfigPath = "resources/grid_configs/grid1.txt";
@@ -20,18 +24,12 @@ public class Main {
     Random random = new Random();
 
     // Create the controller, which initializes the model and starts the view
-    ThreeTriosController controller = new ThreeTriosController(gridConfigPath, cardConfigPath, random);
-    // In your controller or main method
+    ThreeTriosController controller = new ThreeTriosController(gridConfigPath, cardConfigPath,
+            random);
 
-    // Create players
-    Player playerRed = new PlayerImpl("Red"); // Human player
+    Player playerRed = new PlayerImpl("Red");
     MoveStrategy aiStrategy = new FlipMaxStrategy();
-    Player playerBlue = new AIPlayer("Blue", aiStrategy); // AI player
-
-    // Initialize the model
-//    GameModel model = new ThreeTriosGameModel(playerRed, playerBlue);
-//    model.initializeGame(grid, cards, random);
-
+    Player playerBlue = new AIPlayer("Blue", aiStrategy);
   }
 
 

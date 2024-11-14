@@ -11,7 +11,6 @@ import controller.CardFileReader;
 import controller.CardFileReaderImpl;
 import controller.GridFileReader;
 import controller.GridFileReaderImpl;
-import view.TextView;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

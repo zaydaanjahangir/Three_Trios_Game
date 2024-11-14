@@ -47,12 +47,19 @@ public interface ReadOnlyGameModel {
   // New Methods added in Assignment 6
 
   int getGridRows();
+
   int getGridCols();
+
   Cell getCellAt(int row, int col);
+
   List<Card> getPlayerHand(Player player);
+
   Player getCardOwnerAt(int row, int col);
+
   boolean isLegalMove(Player player, int row, int col);
+
   int getPotentialFlips(Player player, Card card, int row, int col);
+
   int getPlayerScore(Player player);
 
 

@@ -39,11 +39,13 @@ public class ThreeTriosGameModel implements GameModel {
       System.out.println("Shuffling is currently under maintenance for testing.");
     }
 
-    this.playerRed = new PlayerImpl("Red");
-    this.playerBlue = new PlayerImpl("Blue");
     int cardsPerPlayer = (totalCardCells + 1) / 2;
 
+    if (playerRed == null || playerBlue == null) {
+      throw new IllegalStateException("Players not set. Use setPlayers() before initializing the game.");
+    }
 
+    // Distribute cards to players
     for (int i = 0; i < cardsPerPlayer; i++) {
       playerRed.addCardToHand(cards.get(i));
     }
@@ -52,8 +54,8 @@ public class ThreeTriosGameModel implements GameModel {
     }
 
     this.currentPlayer = playerRed;
-    System.out.println("Initializing game with current player: " + currentPlayer.getColor());
   }
+
 
   public void setCurrentPlayerForTest(Player player) {
     this.currentPlayer = player;

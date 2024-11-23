@@ -14,7 +14,7 @@ import java.util.Random;
 public class Main {
   public static void main(String[] args) {
     // Paths to configuration files
-    String gridConfigPath = "resources/grid_configs/grid3.txt";
+    String gridConfigPath = "resources/grid_configs/grid1.txt";
     String cardConfigPath = "resources/card_configs/cards3.txt";
     Random random = new Random();
 

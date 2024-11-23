@@ -28,6 +28,8 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
   private JFrame frame;
   private JPanel gridPanel;
   private JPanel handPanel;
+  private JPanel leftHandPanel;
+  private JPanel rightHandPanel;
 
   public ThreeTriosView(ReadOnlyGameModel model, Player player) {
     this.model = model;
@@ -41,12 +43,15 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
     frame.setLayout(new BorderLayout());
 
     gridPanel = new JPanel();
-    handPanel = new JPanel();
+    leftHandPanel = new JPanel();
+    rightHandPanel = new JPanel();
 
     frame.add(gridPanel, BorderLayout.CENTER);
-    frame.add(handPanel, BorderLayout.SOUTH);
+    frame.add(leftHandPanel, BorderLayout.WEST);
+    frame.add(rightHandPanel, BorderLayout.EAST);
 
-    frame.pack();
+    frame.setSize(800, 600);
+
     frame.setVisible(true);
 
     updateView();
@@ -63,23 +68,26 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
     gridPanel.removeAll();
     setupGridPanel();
 
-    // Update hand panel
-    handPanel.removeAll();
-    setupHandPanel();
+    // Update hand panels
+    leftHandPanel.removeAll();
+    rightHandPanel.removeAll();
+    setupHandPanels();
 
     frame.revalidate();
     frame.repaint();
   }
 
+
   private void setupGridPanel() {
     int rows = model.getGrid().getRows();
     int cols = model.getGrid().getCols();
     gridPanel.setLayout(new GridLayout(rows, cols, 0, 0));
+    gridPanel.setPreferredSize(new Dimension(500, 500)); // Set preferred size
 
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
         JPanel cellPanel = new JPanel();
-        cellPanel.setPreferredSize(new Dimension(150, 150));
+        cellPanel.setPreferredSize(new Dimension(100, 100));
         cellPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 1));
 
         Cell cell = model.getGrid().getCell(row, col);
@@ -101,20 +109,46 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
     }
   }
 
-  private void setupHandPanel() {
-    List<Card> hand = player.getHand();
-    handPanel.setLayout(new GridLayout(1, hand.size()));
-    boolean isPlayerTurn = model.getCurrentPlayer().equals(player);
+  private void setupHandPanels() {
+    Player currentPlayer = model.getCurrentPlayer();
+    Player playerRed = model.getPlayerRed();
+    Player playerBlue = model.getPlayerBlue();
 
-    for (Card card : hand) {
+    // Get hands of both players
+    List<Card> playerRedHand = playerRed.getHand();
+    List<Card> playerBlueHand = playerBlue.getHand();
+
+    // Left hand panel for player Red
+    leftHandPanel.setLayout(new GridLayout(playerRedHand.size(), 1));
+    leftHandPanel.setPreferredSize(new Dimension(150, 150 * playerRedHand.size()));
+    boolean isRedTurn = currentPlayer.equals(playerRed);
+
+    for (Card card : playerRedHand) {
       CardPanel cardPanel = new CardPanel(card);
-      cardPanel.setBackground(player.getColor().equals("Red") ? Color.PINK : Color.CYAN);
-      if (isPlayerTurn) {
+      cardPanel.setBackground(Color.PINK);
+      if (player.equals(playerRed) && isRedTurn) {
+        // Only add listener if this view's player is Red and it's Red's turn
         cardPanel.addMouseListener(new CardClickListener(card));
       }
-      handPanel.add(cardPanel);
+      leftHandPanel.add(cardPanel);
+    }
+
+    // Right hand panel for player Blue
+    rightHandPanel.setLayout(new GridLayout(playerBlueHand.size(), 1));
+    rightHandPanel.setPreferredSize(new Dimension(150, 150 * playerBlueHand.size()));
+    boolean isBlueTurn = currentPlayer.equals(playerBlue);
+
+    for (Card card : playerBlueHand) {
+      CardPanel cardPanel = new CardPanel(card);
+      cardPanel.setBackground(Color.CYAN);
+      if (player.equals(playerBlue) && isBlueTurn) {
+        // Only add listener if this view's player is Blue and it's Blue's turn
+        cardPanel.addMouseListener(new CardClickListener(card));
+      }
+      rightHandPanel.add(cardPanel);
     }
   }
+
 
   @Override
   public void addFeatures(Features features) {

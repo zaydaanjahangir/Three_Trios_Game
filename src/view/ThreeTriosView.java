@@ -28,7 +28,6 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
   private Features features;
   private JFrame frame;
   private JPanel gridPanel;
-  private JPanel handPanel;
   private JPanel leftHandPanel;
   private JPanel rightHandPanel;
   private CardPanel selectedCardPanel;
@@ -52,9 +51,7 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
     frame.add(gridPanel, BorderLayout.CENTER);
     frame.add(leftHandPanel, BorderLayout.WEST);
     frame.add(rightHandPanel, BorderLayout.EAST);
-
     frame.setSize(800, 600);
-
     frame.setVisible(true);
 
     updateView();
@@ -62,33 +59,25 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
 
   @Override
   public void updateView() {
-    // Ensure the model and player are initialized
     if (player == null || model == null) {
       throw new IllegalStateException("Player or model is not properly initialized.");
     }
 
-    // Update the frame title to reflect the current player's turn
     String currentPlayerColor = model.getCurrentPlayer().getColor();
     frame.setTitle("Three Trios Game - " + player.getColor() +
             (player.getColor().equals(currentPlayerColor) ? " (Your Turn)" : " (Waiting)"));
 
-    // Clear and repopulate the grid panel based on the current game state
     gridPanel.removeAll();
     setupGridPanel();
-
-    // Reset the selected card highlight
     selectedCardPanel = null;
 
-    // Clear and repopulate the hand panels for both players
     leftHandPanel.removeAll();
     rightHandPanel.removeAll();
     setupHandPanels();
 
-    // Revalidate and repaint to reflect the updates on the UI
     frame.revalidate();
     frame.repaint();
   }
-
 
 
   private void setupGridPanel() {
@@ -110,10 +99,9 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
           Player owner = cell.getOwner();
           cellPanel.setBackground(owner.getColor().equals("Red") ? Color.PINK : Color.CYAN);
 
-          // Display the card information
           Card card = cell.getCard();
           CardPanel cardPanel = new CardPanel(card);
-          cardPanel.setOpaque(false); // So the background color shows
+          cardPanel.setOpaque(false);
           cellPanel.add(cardPanel);
         } else {
           cellPanel.setBackground(Color.YELLOW);
@@ -121,7 +109,6 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
             cellPanel.addMouseListener(new CellClickListener(row, col));
           }
         }
-
         gridPanel.add(cellPanel);
       }
     }
@@ -133,11 +120,10 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
     Player playerRed = model.getPlayerRed();
     Player playerBlue = model.getPlayerBlue();
 
-    // Get hands of both players
     List<Card> playerRedHand = playerRed.getHand();
     List<Card> playerBlueHand = playerBlue.getHand();
 
-    // Left hand panel for player Red
+    // Left hand panel for red player
     leftHandPanel.setLayout(new GridLayout(playerRedHand.size(), 1));
     leftHandPanel.setPreferredSize(new Dimension(150, 150 * playerRedHand.size()));
     boolean isRedTurn = currentPlayer.equals(playerRed);
@@ -146,13 +132,12 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
       CardPanel cardPanel = new CardPanel(card);
       cardPanel.setBackground(Color.PINK);
       if (player.equals(playerRed) && isRedTurn && !(playerRed instanceof AIPlayer)) {
-        // Only add listener if this view's player is Red, it's Red's turn, and the player is not AI
         cardPanel.addMouseListener(new CardClickListener(card, cardPanel));
       }
       leftHandPanel.add(cardPanel);
     }
 
-    // Right hand panel for player Blue
+    // Right hand panel for blue
     rightHandPanel.setLayout(new GridLayout(playerBlueHand.size(), 1));
     rightHandPanel.setPreferredSize(new Dimension(150, 150 * playerBlueHand.size()));
     boolean isBlueTurn = currentPlayer.equals(playerBlue);
@@ -161,7 +146,6 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
       CardPanel cardPanel = new CardPanel(card);
       cardPanel.setBackground(Color.CYAN);
       if (player.equals(playerBlue) && isBlueTurn && !(playerBlue instanceof AIPlayer)) {
-        // Only add listener if this view's player is Blue, it's Blue's turn, and the player is not AI
         cardPanel.addMouseListener(new CardClickListener(card, cardPanel));
       }
       rightHandPanel.add(cardPanel);
@@ -204,13 +188,9 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
     public void mouseClicked(MouseEvent e) {
       if (features != null) {
         features.cardSelected(card);
-
-        // Update the appearance of the selected card
         if (selectedCardPanel != null) {
-          // Reset previous selection
           selectedCardPanel.setBorder(null);
         }
-
         selectedCardPanel = cardPanel;
         selectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
       }

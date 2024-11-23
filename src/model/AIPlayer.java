@@ -10,7 +10,6 @@ public class AIPlayer implements Player, PlayerAction {
   private final String color;
   private final List<Card> hand;
   private final MoveStrategy strategy;
-  private Features features;
 
   public AIPlayer(String color, MoveStrategy strategy) {
     this.color = color;
@@ -45,7 +44,6 @@ public class AIPlayer implements Player, PlayerAction {
    * @param features the Features implementation from the controller
    */
   public void setFeatures(Features features) {
-    this.features = features;
   }
 
   @Override
@@ -54,13 +52,13 @@ public class AIPlayer implements Player, PlayerAction {
     if (move != null) {
       try {
         model.placeCard(this, move.getCard(), move.getRow(), move.getCol());
-        // Do not switch turn here; the controller manages turn switching
-      } catch (Exception e) {
-        System.err.println("AIPlayer encountered an error: " + e.getMessage());
+      } catch (IllegalArgumentException e) {
+        System.out.println("AIPlayer made an invalid move: " + e.getMessage());
+      } catch (IllegalStateException e) {
+        System.out.println("AIPlayer encountered a game state error: " + e.getMessage());
       }
     } else {
-      System.err.println("AIPlayer has no valid moves.");
-      // Handle no valid moves if necessary
+      System.out.println("AIPlayer has no valid moves.");
     }
   }
 

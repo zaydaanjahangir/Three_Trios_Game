@@ -4,9 +4,9 @@ import model.*;
 import view.ThreeTriosViewInterface;
 
 /**
- * Controller class that mediates between the model and the view for a specific player.
+ * Controller class that delegates between the model and the view for a specific player.
  */
-public class ThreeTriosController implements Features {
+public class ThreeTriosController implements Features, GameController {
   private final GameModel model;
   private final PlayerAction playerAction;
   private final Player playerModel;
@@ -19,7 +19,7 @@ public class ThreeTriosController implements Features {
   /**
    * Constructs a controller for a player.
    *
-   * @param model       the shared game model
+   * @param model        the shared game model
    * @param playerAction the player's action interface (could be human or AI)
    * @param playerModel  the player in the model
    * @param ownView      the view associated with this player
@@ -36,8 +36,6 @@ public class ThreeTriosController implements Features {
     this.opponentPlayerAction = opponentPlayerAction;
 
     this.ownView.addFeatures(this);
-
-    // Set features in the player if necessary
     if (playerAction instanceof PlayerImpl) {
       ((PlayerImpl) playerAction).setFeatures(this);
     } else if (playerAction instanceof AIPlayer) {
@@ -51,12 +49,10 @@ public class ThreeTriosController implements Features {
       ownView.showErrorMessage("It's not your turn!");
       return;
     }
-
     if (!playerModel.getHand().contains(card)) {
       ownView.showErrorMessage("You don't have that card.");
       return;
     }
-
     selectedCard = card;
   }
 
@@ -66,74 +62,53 @@ public class ThreeTriosController implements Features {
       ownView.showErrorMessage("It's not your turn!");
       return;
     }
-
     if (selectedCard == null) {
       ownView.showErrorMessage("No card selected.");
       return;
     }
-
     try {
-      // Place the card on the grid
       model.placeCard(playerModel, selectedCard, row, col);
       selectedCard = null;
-
-      // Switch turn in the model
       model.switchTurn();
 
-      // Update both views to reflect the new state
       ownView.updateView();
       otherView.updateView();
 
-      // Check if the game is over
       if (model.isGameOver()) {
         ownView.showGameOverMessage(model.getWinner());
         otherView.showGameOverMessage(model.getWinner());
         return;
       }
 
-      // If the next player is the AI, have it take its turn
       Player currentPlayer = model.getCurrentPlayer();
       if (opponentPlayerAction instanceof AIPlayer &&
               currentPlayer.equals(model.getPlayerBlue())) {
-
-        // AI takes its turn
         opponentPlayerAction.takeTurn(model);
-
-        // Switch turn back to the human player
         model.switchTurn();
-
-        // Update both views after AI's move
         ownView.updateView();
         otherView.updateView();
-
-        // Check if the game is over after AI's move
         if (model.isGameOver()) {
           ownView.showGameOverMessage(model.getWinner());
           otherView.showGameOverMessage(model.getWinner());
         }
       }
-
-    } catch (Exception e) {
-      ownView.showErrorMessage("Error placing card: " + e.getMessage());
+    } catch (IllegalArgumentException e) {
+      ownView.showErrorMessage("Invalid move: " + e.getMessage());
+    } catch (IllegalStateException e) {
+      ownView.showErrorMessage("Game state error: " + e.getMessage());
     }
   }
-
 
   private void notifyNextPlayer() {
     Player currentPlayer = model.getCurrentPlayer();
     if (currentPlayer.equals(playerModel)) {
       playerAction.takeTurn(model);
 
-      // After the AI moves, check if it's still the AI's turn (e.g., due to game rules)
       if (playerAction instanceof AIPlayer && model.getCurrentPlayer().equals(playerModel)) {
-        // Continue the AI's turn (if applicable)
-        notifyNextPlayer(); // Be cautious to prevent infinite loops
+        notifyNextPlayer(); // make sure infinite loops prevented
       } else {
-        // Update views after the AI's move
         ownView.updateView();
         otherView.updateView();
-
-        // Check for game over
         if (model.isGameOver()) {
           ownView.showGameOverMessage(model.getWinner());
           otherView.showGameOverMessage(model.getWinner());
@@ -141,6 +116,4 @@ public class ThreeTriosController implements Features {
       }
     }
   }
-
-
 }

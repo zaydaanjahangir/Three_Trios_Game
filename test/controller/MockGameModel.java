@@ -10,21 +10,15 @@ import java.util.Random;
  * Mock implementation of the GameModel interface for testing purposes.
  */
 public class MockGameModel implements GameModel {
-  // Records of method calls
+  // log of the methods that were called
   public List<String> methodCalls = new ArrayList<>();
-
-  // Mock properties
   private Player currentPlayer;
   private boolean gameOver = false;
   private String winner = "";
-
-  // Constructors
   public MockGameModel() {
-    // Initialize with a default current player
     this.currentPlayer = new PlayerImpl("Red");
   }
 
-  // Implement GameModel methods with mock behavior
   @Override
   public void initializeGame(Grid grid, List<Card> cards, Random random) {
     methodCalls.add("initializeGame");
@@ -38,7 +32,8 @@ public class MockGameModel implements GameModel {
 
   @Override
   public void placeCard(Player player, Card card, int row, int col) {
-    methodCalls.add("placeCard: " + player.getColor() + ", " + card.getName() + ", (" + row + "," + col + ")");
+    methodCalls.add("placeCard: " + player.getColor() + ", " + card.getName() + ", " +
+            "(" + row + "," + col + ")");
   }
 
   @Override
@@ -121,7 +116,7 @@ public class MockGameModel implements GameModel {
   @Override
   public Grid getGrid() {
     methodCalls.add("getGrid");
-    return null; // Return null or a mock Grid if needed
+    return null;
   }
 
   @Override

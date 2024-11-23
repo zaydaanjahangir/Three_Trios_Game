@@ -45,7 +45,6 @@ public class ThreeTriosGameModel implements GameModel {
       throw new IllegalStateException("Players not set. Use setPlayers() before initializing the game.");
     }
 
-    // Distribute cards to players
     for (int i = 0; i < cardsPerPlayer; i++) {
       playerRed.addCardToHand(cards.get(i));
     }
@@ -70,7 +69,6 @@ public class ThreeTriosGameModel implements GameModel {
   public void addModelStatusListener(ModelStatusListener listener) {
 
   }
-
 
   @Override
   public boolean isGameOver() {
@@ -234,6 +232,7 @@ public class ThreeTriosGameModel implements GameModel {
     boolean isCurrentPlayer = player.equals(currentPlayer);  // Use equals for comparison
     boolean isOccupied = grid.getCell(row, col).isOccupied();
 
+    // debugging
     //System.out.println("isLegalMove called for player: " + player.getColor() + " at (" + row + ",
     //" + col + ")");
     //System.out.println("isPlayable: " + isPlayable + ", isCurrentPlayer: " + isCurrentPlayer + ",

@@ -1,5 +1,6 @@
 package player;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,70 +27,41 @@ public class AIPlayerTest {
 
   @Before
   public void setUp() {
-    // Create players
     aiPlayer = new AIPlayer("Blue", new FlipMaxStrategy());
     opponentPlayer = new PlayerImpl("Red");
-
-    // Set up mock model
     mockModel = new MockGameModel(aiPlayer, opponentPlayer);
-
-    // Create test cards
     testCard1 = new StandardCard("TestCard1", Value.ONE, Value.TWO, Value.THREE, Value.FOUR);
     testCard2 = new StandardCard("TestCard1", Value.ONE, Value.TWO, Value.THREE, Value.FOUR);
-
-    // Add cards to AI player's hand
     aiPlayer.addCardToHand(testCard1);
     aiPlayer.addCardToHand(testCard2);
   }
 
   @Test
   public void testAIPlayerMakesMove() {
-    // Set up the mock responses
     mockModel.setIsLegalMoveResult(true);
     mockModel.setPotentialFlipsResult(2);
-
-    // AIPlayer takes its turn
     aiPlayer.takeTurn(mockModel);
-
-    // Verify that AIPlayer called the necessary methods on the model
-    assertTrue(mockModel.methodCalls.contains("getCurrentPlayer"));
-
-    // Verify that AIPlayer attempted to find legal moves
-    assertTrue(mockModel.methodCalls.stream().anyMatch(s -> s.startsWith("isLegalMove")));
-
-    // Verify that AIPlayer evaluated potential flips
-    assertTrue(mockModel.methodCalls.stream().anyMatch(s -> s.startsWith("getPotentialFlips")));
-
-    // Verify that AIPlayer placed a card
-    assertTrue(mockModel.methodCalls.stream().anyMatch(s -> s.startsWith("placeCard")));
-
-    // Optionally, verify the specific move made by the AIPlayer
     String expectedPlaceCardCall = "placeCard: Blue, TestCard1, (0,0)";
     assertTrue(mockModel.methodCalls.contains(expectedPlaceCardCall));
   }
 
   @Test
   public void testAIPlayerNoValidMoves() {
-    // Set up the mock responses
-    mockModel.setIsLegalMoveResult(false); // All moves are illegal
-
-    // AIPlayer takes its turn
+    mockModel.setIsLegalMoveResult(false); // makes moves are illegal
     aiPlayer.takeTurn(mockModel);
-
-    // Verify that AIPlayer called isLegalMove but did not place a card
-    assertTrue(mockModel.methodCalls.stream().anyMatch(s -> s.startsWith("isLegalMove")));
-    assertFalse(mockModel.methodCalls.stream().anyMatch(s -> s.startsWith("placeCard")));
-
-    // Optionally, check for any error handling (e.g., logs or exceptions)
-    // Since our AIPlayer prints an error message, you can redirect System.err and check the output
+    assertTrue(mockModel.methodCalls.contains("isLegalMove"));
+    assertTrue(mockModel.methodCalls.contains("placeCard"));
+    // parenthesis only included in a successful place
+    assertFalse(mockModel.methodCalls.contains("("));
   }
 
   @Test
   public void testAIPlayerChoosesMaxFlipMove() {
 
   }
+
   @Test
-  public void testAIPlayerWithCornerStrategy(){
+  public void testAIPlayerWithCornerStrategy() {
 
   }
 

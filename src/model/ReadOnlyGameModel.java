@@ -129,6 +129,13 @@ public interface ReadOnlyGameModel {
    */
   Player getPlayerBlue();
 
+  /**
+   * Sets the players for the game model.
+   *
+   * @param playerRed the Red player
+   * @param playerBlue the Blue player
+   */
   void setPlayers(Player playerRed, Player playerBlue);
+
 
 }

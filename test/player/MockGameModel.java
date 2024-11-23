@@ -14,22 +14,14 @@ import model.Player;
 public class MockGameModel implements GameModel {
   public List<String> methodCalls = new ArrayList<>();
 
-  // Mock properties
-  private Player currentPlayer;
-  private Player opponentPlayer;
+  private final Player currentPlayer;
   private Grid grid;
-
-  // Customizable responses
   private boolean isLegalMoveResult = true;
   private int potentialFlipsResult = 0;
 
-  // Constructor
   public MockGameModel(Player currentPlayer, Player opponentPlayer) {
     this.currentPlayer = currentPlayer;
-    this.opponentPlayer = opponentPlayer;
   }
-
-  // Implement required methods
 
   @Override
   public Player getCurrentPlayer() {
@@ -93,7 +85,8 @@ public class MockGameModel implements GameModel {
 
   @Override
   public int getPotentialFlips(Player player, Card card, int row, int col) {
-    methodCalls.add("getPotentialFlips: " + player.getColor() + ", " + card.getName() + ", (" + row + "," + col + ")");
+    methodCalls.add("getPotentialFlips: " + player.getColor() + ", " + card.getName() + ", " +
+            "(" + row + "," + col + ")");
     return potentialFlipsResult;
   }
 
@@ -119,8 +112,8 @@ public class MockGameModel implements GameModel {
 
   @Override
   public void placeCard(Player player, Card card, int row, int col) {
-    methodCalls.add("placeCard: " + player.getColor() + ", " + card.getName() + ", (" + row + "," + col + ")");
-    // Simulate placing a card; update the grid if necessary
+    methodCalls.add("placeCard: " + player.getColor() + ", " + card.getName() + ", " +
+            "(" + row + "," + col + ")");
   }
 
   @Override
@@ -163,7 +156,8 @@ public class MockGameModel implements GameModel {
   }
 
   @Override
-  public void initializeGame(Grid grid, List<Card> cards, Random random) throws IllegalArgumentException {
+  public void initializeGame(Grid grid, List<Card> cards, Random random)
+          throws IllegalArgumentException {
 
   }
 

@@ -10,7 +10,7 @@ import view.ThreeTriosViewInterface;
  * Mock implementation of the ThreeTriosViewInterface for testing purposes.
  */
 public class MockThreeTriosView implements ThreeTriosViewInterface {
-  // Records of method calls
+  // log of method calls
   public List<String> methodCalls = new ArrayList<>();
 
   @Override

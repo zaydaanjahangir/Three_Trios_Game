@@ -1,5 +1,6 @@
 import controller.*;
 import model.*;
+import strategy.CornerStrategy;
 import strategy.FlipMaxStrategy;
 import view.ThreeTriosView;
 import view.ThreeTriosViewInterface;
@@ -30,7 +31,7 @@ public class Main {
 
     // Create players
     PlayerImpl playerRed = new PlayerImpl("Red");
-    AIPlayer playerBlue = new AIPlayer("Blue", new FlipMaxStrategy()); // AI with FlipMaxStrategy
+    AIPlayer playerBlue = new AIPlayer("Blue", new CornerStrategy()); // AI with FlipMaxStrategy
     model.setPlayers(playerRed, playerBlue);
 
 

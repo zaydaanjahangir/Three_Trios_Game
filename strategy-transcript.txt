@@ -1,5 +1,0 @@
-CornerStrategy Transcript:
-Inspected: 0,0
-Inspected: 0,2
-Inspected: 2,0
-Inspected: 2,2

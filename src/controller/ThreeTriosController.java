@@ -69,10 +69,14 @@ public class ThreeTriosController implements Features {
     }
 
     try {
+      // Place the card on the grid
       model.placeCard(playerModel, selectedCard, row, col);
       selectedCard = null;
 
-      // Update both views
+      // Switch turn in the model
+      model.switchTurn();
+
+      // Update both views to reflect the new state
       ownView.updateView();
       otherView.updateView();
 
@@ -81,11 +85,21 @@ public class ThreeTriosController implements Features {
         ownView.showGameOverMessage(model.getWinner());
         otherView.showGameOverMessage(model.getWinner());
       } else {
-        // Switch turn in the model
-        model.switchTurn();
+        // Notify the next player (if applicable)
+        notifyNextPlayer();
       }
     } catch (Exception e) {
       ownView.showErrorMessage("Error placing card: " + e.getMessage());
     }
   }
+
+
+  private void notifyNextPlayer() {
+    Player currentPlayer = model.getCurrentPlayer();
+    if (currentPlayer.equals(playerModel)) {
+      playerAction.takeTurn(model);
+    }
+  }
+
+
 }

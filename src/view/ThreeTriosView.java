@@ -30,6 +30,8 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
   private JPanel handPanel;
   private JPanel leftHandPanel;
   private JPanel rightHandPanel;
+  private CardPanel selectedCardPanel;
+
 
   public ThreeTriosView(ReadOnlyGameModel model, Player player) {
     this.model = model;
@@ -59,30 +61,40 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
 
   @Override
   public void updateView() {
-    // Update the frame title to reflect whose turn it is
+    // Ensure the model and player are initialized
+    if (player == null || model == null) {
+      throw new IllegalStateException("Player or model is not properly initialized.");
+    }
+
+    // Update the frame title to reflect the current player's turn
     String currentPlayerColor = model.getCurrentPlayer().getColor();
     frame.setTitle("Three Trios Game - " + player.getColor() +
             (player.getColor().equals(currentPlayerColor) ? " (Your Turn)" : " (Waiting)"));
 
-    // Update grid panel
+    // Clear and repopulate the grid panel based on the current game state
     gridPanel.removeAll();
     setupGridPanel();
 
-    // Update hand panels
+    // Reset the selected card highlight
+    selectedCardPanel = null;
+
+    // Clear and repopulate the hand panels for both players
     leftHandPanel.removeAll();
     rightHandPanel.removeAll();
     setupHandPanels();
 
+    // Revalidate and repaint to reflect the updates on the UI
     frame.revalidate();
     frame.repaint();
   }
+
 
 
   private void setupGridPanel() {
     int rows = model.getGrid().getRows();
     int cols = model.getGrid().getCols();
     gridPanel.setLayout(new GridLayout(rows, cols, 0, 0));
-    gridPanel.setPreferredSize(new Dimension(500, 500)); // Set preferred size
+    gridPanel.setPreferredSize(new Dimension(500, 500));
 
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
@@ -96,7 +108,12 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
         } else if (cell.isOccupied()) {
           Player owner = cell.getOwner();
           cellPanel.setBackground(owner.getColor().equals("Red") ? Color.PINK : Color.CYAN);
-          // Optionally display card info here
+
+          // Display the card information
+          Card card = cell.getCard();
+          CardPanel cardPanel = new CardPanel(card);
+          cardPanel.setOpaque(false); // So the background color shows
+          cellPanel.add(cardPanel);
         } else {
           cellPanel.setBackground(Color.YELLOW);
           if (model.getCurrentPlayer().equals(player)) {
@@ -108,6 +125,7 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
       }
     }
   }
+
 
   private void setupHandPanels() {
     Player currentPlayer = model.getCurrentPlayer();
@@ -127,8 +145,8 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
       CardPanel cardPanel = new CardPanel(card);
       cardPanel.setBackground(Color.PINK);
       if (player.equals(playerRed) && isRedTurn) {
-        // Only add listener if this view's player is Red and it's Red's turn
-        cardPanel.addMouseListener(new CardClickListener(card));
+        // Pass both card and cardPanel to the listener
+        cardPanel.addMouseListener(new CardClickListener(card, cardPanel));
       }
       leftHandPanel.add(cardPanel);
     }
@@ -143,7 +161,7 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
       cardPanel.setBackground(Color.CYAN);
       if (player.equals(playerBlue) && isBlueTurn) {
         // Only add listener if this view's player is Blue and it's Blue's turn
-        cardPanel.addMouseListener(new CardClickListener(card));
+        cardPanel.addMouseListener(new CardClickListener(card, cardPanel));
       }
       rightHandPanel.add(cardPanel);
     }
@@ -174,18 +192,30 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
 
   private class CardClickListener extends MouseAdapter {
     private final Card card;
+    private final CardPanel cardPanel;
 
-    public CardClickListener(Card card) {
+    public CardClickListener(Card card, CardPanel cardPanel) {
       this.card = card;
+      this.cardPanel = cardPanel;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
       if (features != null) {
         features.cardSelected(card);
+
+        // Update the appearance of the selected card
+        if (selectedCardPanel != null) {
+          // Reset previous selection
+          selectedCardPanel.setBorder(null);
+        }
+
+        selectedCardPanel = cardPanel;
+        selectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
       }
     }
   }
+
 
   private class CellClickListener extends MouseAdapter {
     private final int row;

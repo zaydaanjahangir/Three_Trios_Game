@@ -115,5 +115,18 @@ public interface ReadOnlyGameModel {
    */
   int getPlayerScore(Player player);
 
+  /**
+   * Gets the Red player.
+   *
+   * @return the Red player
+   */
+  Player getPlayerRed();
+
+  /**
+   * Gets the Blue player.
+   *
+   * @return the Blue player
+   */
+  Player getPlayerBlue();
 
 }

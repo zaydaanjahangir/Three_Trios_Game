@@ -59,6 +59,11 @@ public class ThreeTriosGameModel implements GameModel {
     this.currentPlayer = player;
   }
 
+  @Override
+  public void addModelStatusListener(ModelStatusListener listener) {
+
+  }
+
 
   @Override
   public boolean isGameOver() {
@@ -300,5 +305,28 @@ public class ThreeTriosGameModel implements GameModel {
     return flips;
   }
 
+  @Override
+  public void switchTurn() {
+    if (currentPlayer.equals(playerRed)) {
+      currentPlayer = playerBlue;
+    } else {
+      currentPlayer = playerRed;
+    }
+  }
+
+  @Override
+  public void startGame() {
+
+  }
+
+  @Override
+  public Player getPlayerRed() {
+    return this.playerRed;
+  }
+
+  @Override
+  public Player getPlayerBlue() {
+    return this.playerBlue;
+  }
 
 }

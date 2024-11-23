@@ -13,6 +13,7 @@ public class ThreeTriosController implements Features {
   private final ThreeTriosViewInterface view;
   private final PlayerAction player1;
   private final PlayerAction player2;
+  private Card selectedCard;
 
   /**
    * Constructor for the controller.
@@ -40,9 +41,23 @@ public class ThreeTriosController implements Features {
     this.player1 = player1;
     this.player2 = player2;
 
+    if (player1 instanceof PlayerImpl) {
+      ((PlayerImpl) player1).setFeatures(this);
+    } else if (player1 instanceof AIPlayer) {
+      ((AIPlayer) player1).setFeatures(this);
+    }
+
+    if (player2 instanceof PlayerImpl) {
+      ((PlayerImpl) player2).setFeatures(this);
+    } else if (player2 instanceof AIPlayer) {
+      ((AIPlayer) player2).setFeatures(this);
+    }
+
     // Pass the model and controller as features to the view
     this.view = new ThreeTriosView(this.model);
     this.view.addFeatures(this);
+
+
   }
 
   /**
@@ -70,33 +85,39 @@ public class ThreeTriosController implements Features {
   public void cardSelected(Card card) {
     try {
       Player currentPlayer = model.getCurrentPlayer();
-      currentPlayer.removeCardFromHand(card);
+      if (!currentPlayer.getHand().contains(card)) {
+        view.showErrorMessage("You don't have that card in your hand.");
+        return;
+      }
+      selectedCard = card; // Store the selected card
+      view.updateView(); // Update the view if necessary
     } catch (Exception e) {
       view.showErrorMessage("Error selecting card: " + e.getMessage());
     }
   }
 
+
   @Override
   public void cellSelected(int row, int col) {
     try {
-      Player currentPlayer = model.getCurrentPlayer();
-      if (currentPlayer.getHand().isEmpty()) {
+      if (selectedCard == null) {
         view.showErrorMessage("No card selected. Select a card first.");
         return;
       }
-
-      Card selectedCard = currentPlayer.getHand().get(0); // Assuming only one selected
+      Player currentPlayer = model.getCurrentPlayer();
       model.placeCard(currentPlayer, selectedCard, row, col);
-
+      selectedCard = null; // Reset selected card after placing
       view.updateView(); // Refresh the view
 
       if (model.isGameOver()) {
         view.showGameOverMessage(model.getWinner());
       } else {
+        model.switchTurn(); // Switch turns in the model
         notifyPlayerTurn(); // Notify the next player
       }
     } catch (Exception e) {
       view.showErrorMessage("Error placing card: " + e.getMessage());
     }
   }
+
 }

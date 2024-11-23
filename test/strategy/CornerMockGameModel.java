@@ -185,5 +185,15 @@ public class CornerMockGameModel implements ReadOnlyGameModel {
   public int getPlayerScore(Player player) {
     return 0;
   }
+
+  @Override
+  public Player getPlayerRed() {
+    return null;
+  }
+
+  @Override
+  public Player getPlayerBlue() {
+    return null;
+  }
 }
 

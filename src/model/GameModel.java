@@ -54,5 +54,7 @@ public interface GameModel extends ReadOnlyGameModel {
   void setCurrentPlayerForTest(Player player);
 
   void addModelStatusListener(ModelStatusListener listener);
+  void switchTurn();
+  void startGame();
 }
 

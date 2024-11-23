@@ -7,4 +7,5 @@ public interface ThreeTriosViewInterface {
   void updateView();
   void showErrorMessage(String message);
   void showGameOverMessage(String message);
+  void setVisible(boolean visible);
 }

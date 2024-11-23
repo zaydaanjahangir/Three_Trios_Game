@@ -1,42 +1,64 @@
-import controller.ThreeTriosController;
-import model.AIPlayer;
-import model.PlayerAction;
-import model.PlayerImpl;
-import strategy.CornerStrategy;
+import controller.*;
+import model.*;
 import strategy.FlipMaxStrategy;
+import view.ThreeTriosView;
+import view.ThreeTriosViewInterface;
 
+import java.io.File;
+import java.util.List;
 import java.util.Random;
 
+/**
+ * Main class to start the Three Trios game.
+ */
 public class Main {
   public static void main(String[] args) {
-    String player1Type = args.length > 0 ? args[0] : "human";
-    String player2Type = args.length > 1 ? args[1] : "human";
-
     // Paths to configuration files
-    String gridConfigPath = "resources/grid_configs/grid1.txt";
+    String gridConfigPath = "resources/grid_configs/grid3.txt";
     String cardConfigPath = "resources/card_configs/cards3.txt";
     Random random = new Random();
 
-    // Create players based on arguments
-    PlayerAction player1 = createPlayer("Red", player1Type);
-    PlayerAction player2 = createPlayer("Blue", player2Type);
+    // Read grid and cards
+    GridFileReader gridReader = new GridFileReaderImpl();
+    Grid grid = gridReader.readGrid(new File(gridConfigPath));
 
-    // Create and start the controller
-    ThreeTriosController controller = new ThreeTriosController(
-            gridConfigPath, cardConfigPath, player1, player2, random);
-    controller.startGame();
-  }
+    CardFileReader cardReader = new CardFileReaderImpl();
+    List<Card> cards = cardReader.readCards(new File(cardConfigPath));
 
-  private static PlayerAction createPlayer(String color, String type) {
-    if (type.equalsIgnoreCase("human")) {
-      return new PlayerImpl(color);
-    } else if (type.equalsIgnoreCase("strategy1")) {
-      return new AIPlayer(color, new FlipMaxStrategy());
-    } else if (type.equalsIgnoreCase("strategy2")) {
-      return new AIPlayer(color, new CornerStrategy());
-    } else {
-      throw new IllegalArgumentException("Unknown player type: " + type);
-    }
+    // Create the shared model
+    GameModel model = new ThreeTriosGameModel();
+
+    // Create players
+    PlayerImpl playerRed = new PlayerImpl("Red");
+    PlayerAction playerRedAction = playerRed; // For consistency with PlayerAction interface
+
+    PlayerImpl playerBlue = new PlayerImpl("Blue");
+    PlayerAction playerBlueAction = playerBlue;
+
+    // Alternatively, create an AI player
+    // AIPlayer playerBlue = new AIPlayer("Blue", new FlipMaxStrategy());
+    // PlayerAction playerBlueAction = playerBlue;
+
+    model.setPlayers(playerRed, playerBlue);
+
+    // Initialize the game
+    model.initializeGame(grid, cards, random);
+
+    // Create views
+    ThreeTriosViewInterface viewRed = new ThreeTriosView(model, playerRed);
+    ThreeTriosViewInterface viewBlue = new ThreeTriosView(model, playerBlue);
+
+    // Create controllers
+    ThreeTriosController controllerRed = new ThreeTriosController(
+            model, playerRedAction, playerRed, viewRed, viewBlue);
+    ThreeTriosController controllerBlue = new ThreeTriosController(
+            model, playerBlueAction, playerBlue, viewBlue, viewRed);
+
+    // Start the game
+    model.startGame();
+
+    // Set views visible
+    viewRed.setVisible(true);
+    viewBlue.setVisible(true);
   }
 }
-

@@ -59,6 +59,11 @@ public class ThreeTriosGameModel implements GameModel {
     this.currentPlayer = player;
   }
 
+  public void setPlayers(Player playerRed, Player playerBlue) {
+    this.playerRed = playerRed;
+    this.playerBlue = playerBlue;
+  }
+
   @Override
   public void addModelStatusListener(ModelStatusListener listener) {
 
@@ -107,8 +112,7 @@ public class ThreeTriosGameModel implements GameModel {
 
   @Override
   public void placeCard(Player player, Card card, int row, int col) {
-    if (player != currentPlayer) {
-      System.out.println(player);
+    if (!player.equals(currentPlayer)) {
       throw new IllegalArgumentException("It's not your turn.");
     }
 
@@ -117,18 +121,12 @@ public class ThreeTriosGameModel implements GameModel {
     }
 
     if (!player.getHand().contains(card)) {
-      throw new IllegalArgumentException("Player does not have the specified card.");
+      throw new IllegalArgumentException("You don't have that card.");
     }
 
     grid.placeCard(card, row, col, player);
     player.removeCardFromHand(card);
     executeBattlePhase(row, col);
-
-    if (currentPlayer == playerRed) {
-      currentPlayer = playerBlue;
-    } else {
-      currentPlayer = playerRed;
-    }
   }
 
   @Override
@@ -307,11 +305,7 @@ public class ThreeTriosGameModel implements GameModel {
 
   @Override
   public void switchTurn() {
-    if (currentPlayer.equals(playerRed)) {
-      currentPlayer = playerBlue;
-    } else {
-      currentPlayer = playerRed;
-    }
+    currentPlayer = currentPlayer.equals(playerRed) ? playerBlue : playerRed;
   }
 
   @Override

@@ -129,4 +129,6 @@ public interface ReadOnlyGameModel {
    */
   Player getPlayerBlue();
 
+  void setPlayers(Player playerRed, Player playerBlue);
+
 }

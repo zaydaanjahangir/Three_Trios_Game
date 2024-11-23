@@ -19,11 +19,12 @@ import model.ReadOnlyGameModel;
 /**
  * The view class of the ThreeTriosGame contributing the visual aspect via JPanel.
  */
-public class ThreeTriosView {
+public class ThreeTriosView implements ThreeTriosViewInterface {
   private final ReadOnlyGameModel model;
   private JFrame frame;
   private Card selectedCard;
   private CardPanel selectedCardPanel;
+  private Features features;
 
   public ThreeTriosView(ReadOnlyGameModel model) {
     this.model = model;
@@ -93,6 +94,34 @@ public class ThreeTriosView {
     frame.add(rightHandPanel, BorderLayout.EAST);
   }
 
+  @Override
+  public void addFeatures(Features features) {
+    this.features = features;
+  }
+
+  @Override
+  public void updateView() {
+    frame.getContentPane().removeAll();       // Clear the frame
+    setupGridPanel();                         // Rebuild the grid panel
+    setupHandPanels();                        // Rebuild the hand panels
+    frame.revalidate();                       // Refresh the frame
+    frame.repaint();                          // Redraw the frame
+  }
+
+
+  @Override
+  public void showErrorMessage(String message) {
+    javax.swing.JOptionPane.showMessageDialog(frame, message, "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+  }
+
+  @Override
+  public void showGameOverMessage(String message) {
+    javax.swing.JOptionPane.showMessageDialog(frame, message, "Game Over",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+  }
+
+
   private class CardClickListener extends MouseAdapter {
     private final Card card;
     private final CardPanel cardPanel;
@@ -104,21 +133,9 @@ public class ThreeTriosView {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-      if (selectedCard == card) {
-        if (selectedCardPanel != null) {
-          selectedCardPanel.setBorder(null);
-        }
-        selectedCard = null;
-        selectedCardPanel = null;
-        System.out.println("Deselected card: " + card.getName());
-      } else {
-        if (selectedCardPanel != null) {
-          selectedCardPanel.setBorder(null);
-        }
-        selectedCard = card;
-        selectedCardPanel = cardPanel;
-        cardPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-        System.out.println("Selected card: " + card.getName());
+      if (features != null) {
+        features.cardSelected(card); // Notify the controller of the selected card
+        System.out.println("Selected card: " + card.getName()); // Optional debug output
       }
     }
   }
@@ -136,36 +153,9 @@ public class ThreeTriosView {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-      if (selectedCard != null && cellPanel.getBackground() == Color.YELLOW) {
-        cellPanel.setBackground(selectedCardPanel.getBackground());
-        cellPanel.setLayout(new BorderLayout());
-
-        JLabel northLabel = new JLabel(String.valueOf(selectedCard.getNorthValue()), JLabel.CENTER);
-        JLabel southLabel = new JLabel(String.valueOf(selectedCard.getSouthValue()), JLabel.CENTER);
-        JLabel eastLabel = new JLabel(String.valueOf(selectedCard.getEastValue()));
-        JLabel westLabel = new JLabel(String.valueOf(selectedCard.getWestValue()));
-
-        cellPanel.add(northLabel, BorderLayout.NORTH);
-        cellPanel.add(eastLabel, BorderLayout.EAST);
-        cellPanel.add(southLabel, BorderLayout.SOUTH);
-        cellPanel.add(westLabel, BorderLayout.WEST);
-
-        cellPanel.revalidate();
-        cellPanel.repaint();
-
-        System.out.println("Placed " + selectedCard.getName() + " at (" + row + ", " + col + ")");
-
-        JPanel parentPanel = (JPanel) selectedCardPanel.getParent();
-        parentPanel.remove(selectedCardPanel);
-        parentPanel.revalidate();
-        parentPanel.repaint();
-
-        selectedCard = null;
-        selectedCardPanel = null;
-      } else if (selectedCard == null) {
-        System.out.println("No card selected.");
-      } else {
-        System.out.println("Cannot place a card here.");
+      if (features != null) {
+        features.cellSelected(row, col);
+        System.out.println("Clicked on cell: (" + row + ", " + col + ")"); // debug output
       }
     }
   }

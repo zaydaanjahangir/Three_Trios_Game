@@ -30,16 +30,9 @@ public class Main {
 
     // Create players
     PlayerImpl playerRed = new PlayerImpl("Red");
-    PlayerAction playerRedAction = playerRed; // For consistency with PlayerAction interface
-
-    PlayerImpl playerBlue = new PlayerImpl("Blue");
-    PlayerAction playerBlueAction = playerBlue;
-
-    // Alternatively, create an AI player
-    // AIPlayer playerBlue = new AIPlayer("Blue", new FlipMaxStrategy());
-    // PlayerAction playerBlueAction = playerBlue;
-
+    AIPlayer playerBlue = new AIPlayer("Blue", new FlipMaxStrategy()); // AI with FlipMaxStrategy
     model.setPlayers(playerRed, playerBlue);
+
 
     // Initialize the game
     model.initializeGame(grid, cards, random);
@@ -50,9 +43,10 @@ public class Main {
 
     // Create controllers
     ThreeTriosController controllerRed = new ThreeTriosController(
-            model, playerRedAction, playerRed, viewRed, viewBlue);
+            model, playerRed, playerRed, viewRed, viewBlue, playerBlue);
+
     ThreeTriosController controllerBlue = new ThreeTriosController(
-            model, playerBlueAction, playerBlue, viewBlue, viewRed);
+            model, playerBlue, playerBlue, viewBlue, viewRed, playerRed);
 
     // Start the game
     model.startGame();

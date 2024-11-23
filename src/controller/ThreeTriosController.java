@@ -13,6 +13,8 @@ public class ThreeTriosController implements Features {
   private final ThreeTriosViewInterface ownView;
   private final ThreeTriosViewInterface otherView;
   private Card selectedCard;
+  private final PlayerAction opponentPlayerAction;
+
 
   /**
    * Constructs a controller for a player.
@@ -24,12 +26,14 @@ public class ThreeTriosController implements Features {
    * @param otherView    the view of the other player
    */
   public ThreeTriosController(GameModel model, PlayerAction playerAction, Player playerModel,
-                              ThreeTriosViewInterface ownView, ThreeTriosViewInterface otherView) {
+                              ThreeTriosViewInterface ownView, ThreeTriosViewInterface otherView,
+                              PlayerAction opponentPlayerAction) {
     this.model = model;
     this.playerAction = playerAction;
     this.playerModel = playerModel;
     this.ownView = ownView;
     this.otherView = otherView;
+    this.opponentPlayerAction = opponentPlayerAction;
 
     this.ownView.addFeatures(this);
 
@@ -84,10 +88,31 @@ public class ThreeTriosController implements Features {
       if (model.isGameOver()) {
         ownView.showGameOverMessage(model.getWinner());
         otherView.showGameOverMessage(model.getWinner());
-      } else {
-        // Notify the next player (if applicable)
-        notifyNextPlayer();
+        return;
       }
+
+      // If the next player is the AI, have it take its turn
+      Player currentPlayer = model.getCurrentPlayer();
+      if (opponentPlayerAction instanceof AIPlayer &&
+              currentPlayer.equals(model.getPlayerBlue())) {
+
+        // AI takes its turn
+        opponentPlayerAction.takeTurn(model);
+
+        // Switch turn back to the human player
+        model.switchTurn();
+
+        // Update both views after AI's move
+        ownView.updateView();
+        otherView.updateView();
+
+        // Check if the game is over after AI's move
+        if (model.isGameOver()) {
+          ownView.showGameOverMessage(model.getWinner());
+          otherView.showGameOverMessage(model.getWinner());
+        }
+      }
+
     } catch (Exception e) {
       ownView.showErrorMessage("Error placing card: " + e.getMessage());
     }
@@ -98,6 +123,22 @@ public class ThreeTriosController implements Features {
     Player currentPlayer = model.getCurrentPlayer();
     if (currentPlayer.equals(playerModel)) {
       playerAction.takeTurn(model);
+
+      // After the AI moves, check if it's still the AI's turn (e.g., due to game rules)
+      if (playerAction instanceof AIPlayer && model.getCurrentPlayer().equals(playerModel)) {
+        // Continue the AI's turn (if applicable)
+        notifyNextPlayer(); // Be cautious to prevent infinite loops
+      } else {
+        // Update views after the AI's move
+        ownView.updateView();
+        otherView.updateView();
+
+        // Check for game over
+        if (model.isGameOver()) {
+          ownView.showGameOverMessage(model.getWinner());
+          otherView.showGameOverMessage(model.getWinner());
+        }
+      }
     }
   }
 

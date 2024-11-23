@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import controller.Features;
+import model.AIPlayer;
 import model.Card;
 import model.Cell;
 import model.Player;
@@ -144,8 +145,8 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
     for (Card card : playerRedHand) {
       CardPanel cardPanel = new CardPanel(card);
       cardPanel.setBackground(Color.PINK);
-      if (player.equals(playerRed) && isRedTurn) {
-        // Pass both card and cardPanel to the listener
+      if (player.equals(playerRed) && isRedTurn && !(playerRed instanceof AIPlayer)) {
+        // Only add listener if this view's player is Red, it's Red's turn, and the player is not AI
         cardPanel.addMouseListener(new CardClickListener(card, cardPanel));
       }
       leftHandPanel.add(cardPanel);
@@ -159,8 +160,8 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
     for (Card card : playerBlueHand) {
       CardPanel cardPanel = new CardPanel(card);
       cardPanel.setBackground(Color.CYAN);
-      if (player.equals(playerBlue) && isBlueTurn) {
-        // Only add listener if this view's player is Blue and it's Blue's turn
+      if (player.equals(playerBlue) && isBlueTurn && !(playerBlue instanceof AIPlayer)) {
+        // Only add listener if this view's player is Blue, it's Blue's turn, and the player is not AI
         cardPanel.addMouseListener(new CardClickListener(card, cardPanel));
       }
       rightHandPanel.add(cardPanel);

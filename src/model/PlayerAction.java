@@ -10,5 +10,5 @@ public interface PlayerAction {
    *
    * @param model the read-only model of the game
    */
-  void takeTurn(ReadOnlyGameModel model);
+  void takeTurn(GameModel model);
 }

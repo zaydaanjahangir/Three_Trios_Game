@@ -49,14 +49,21 @@ public class AIPlayer implements Player, PlayerAction {
   }
 
   @Override
-  public void takeTurn(ReadOnlyGameModel model) {
-    // AI determines its move
+  public void takeTurn(GameModel model) {
     Move move = strategy.determineMove(model, this);
     if (move != null) {
-      features.cardSelected(move.getCard());
-      features.cellSelected(move.getRow(), move.getCol());
+      try {
+        model.placeCard(this, move.getCard(), move.getRow(), move.getCol());
+        // Do not switch turn here; the controller manages turn switching
+      } catch (Exception e) {
+        System.err.println("AIPlayer encountered an error: " + e.getMessage());
+      }
+    } else {
+      System.err.println("AIPlayer has no valid moves.");
+      // Handle no valid moves if necessary
     }
   }
+
 
   @Override
   public boolean equals(Object obj) {

@@ -49,11 +49,6 @@ public class PlayerImpl implements Player, PlayerAction {
   }
 
   @Override
-  public void takeTurn(ReadOnlyGameModel model) {
-    // Human players rely on the view to handle events
-  }
-
-  @Override
   public boolean equals(Object obj) {
     if (this == obj) {
       return true;
@@ -68,6 +63,11 @@ public class PlayerImpl implements Player, PlayerAction {
   @Override
   public int hashCode() {
     return color.hashCode();
+  }
+
+  @Override
+  public void takeTurn(GameModel model) {
+
   }
 }
 

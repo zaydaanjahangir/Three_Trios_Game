@@ -3,22 +3,15 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.Features;
 import strategy.MoveStrategy;
 
-/**
- * Represents an AI player in the Three Trios game.
- */
-public class AIPlayer implements Player {
+public class AIPlayer implements Player, PlayerAction {
   private final String color;
   private final List<Card> hand;
   private final MoveStrategy strategy;
+  private Features features;
 
-  /**
-   * AI player constructor which creates an artificial player with a set strategy.
-   *
-   * @param color    color of the player
-   * @param strategy chosen strategy which the player abides to
-   */
   public AIPlayer(String color, MoveStrategy strategy) {
     this.color = color;
     this.hand = new ArrayList<>();
@@ -46,17 +39,22 @@ public class AIPlayer implements Player {
   }
 
   /**
-   * Makes a move using the assigned strategy.
+   * Set the Features interface for this player, allowing communication
+   * with the controller.
    *
-   * @param model the game model
+   * @param features the Features implementation from the controller
    */
-  public void makeMove(GameModel model) {
+  public void setFeatures(Features features) {
+    this.features = features;
+  }
+
+  @Override
+  public void takeTurn(ReadOnlyGameModel model) {
+    // AI determines its move
     Move move = strategy.determineMove(model, this);
-    if (move != null && hand.contains(move.getCard())) {
-      model.placeCard(this, move.getCard(), move.getRow(), move.getCol());
-    } else {
-      // Handle no valid move scenario
-      System.out.println("No move was made");
+    if (move != null) {
+      features.cardSelected(move.getCard());
+      features.cellSelected(move.getRow(), move.getCol());
     }
   }
 
@@ -76,5 +74,4 @@ public class AIPlayer implements Player {
   public int hashCode() {
     return color.hashCode();
   }
-
 }

@@ -2,14 +2,16 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import controller.Features;
 
 /**
  * Represents a player in the Three Trios game.
  * Manages the player's hand and color.
  */
-public class PlayerImpl implements Player {
-  private final String color; // "Red" or "Blue"
+public class PlayerImpl implements Player, PlayerAction {
+  private final String color;
   private final List<Card> hand;
+  private Features features;
 
   public PlayerImpl(String color) {
     this.color = color;
@@ -31,8 +33,24 @@ public class PlayerImpl implements Player {
     return new ArrayList<>(hand);
   }
 
+  @Override
   public String getColor() {
     return color;
+  }
+
+  /**
+   * Set the Features interface for this player, allowing communication
+   * with the controller.
+   *
+   * @param features the Features implementation from the controller
+   */
+  public void setFeatures(Features features) {
+    this.features = features;
+  }
+
+  @Override
+  public void takeTurn(ReadOnlyGameModel model) {
+    // Human players rely on the view to handle events
   }
 
   @Override
@@ -47,12 +65,9 @@ public class PlayerImpl implements Player {
     return false;
   }
 
-
-
   @Override
   public int hashCode() {
     return color.hashCode();
   }
-
 }
 

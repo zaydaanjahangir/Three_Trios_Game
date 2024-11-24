@@ -49,5 +49,51 @@ public class HumanPlayerTest {
     assertNotEquals(player1, player3);
   }
 
+  @Test
+  public void testPlayerColor() {
+    PlayerImpl player = new PlayerImpl("Red");
+    assertEquals("Red", player.getColor());
+    PlayerImpl anotherPlayer = new PlayerImpl("Blue");
+    assertEquals("Blue", anotherPlayer.getColor());
+  }
+
+  @Test
+  public void testPlayerHandIsImmutable() {
+    PlayerImpl player = new PlayerImpl("Red");
+    Card card = new StandardCard("Card", Value.ONE, Value.TWO, Value.THREE, Value.FOUR);
+    player.addCardToHand(card);
+
+    List<Card> hand = player.getHand();
+    hand.clear();
+
+    assertFalse(player.getHand().isEmpty());
+  }
+
+  @Test
+  public void testPlayerAddDuplicateCard() {
+    PlayerImpl player = new PlayerImpl("Red");
+    Card card = new StandardCard("Card", Value.ONE, Value.TWO, Value.THREE, Value.FOUR);
+
+    player.addCardToHand(card);
+    player.addCardToHand(card);
+
+    List<Card> hand = player.getHand();
+    assertEquals(2, hand.size());
+  }
+
+  @Test
+  public void testPlayerRemoveNonexistentCard() {
+    PlayerImpl player = new PlayerImpl("Red");
+    Card card1 = new StandardCard("Card1", Value.ONE, Value.TWO, Value.THREE, Value.FOUR);
+    Card card2 = new StandardCard("Card2", Value.TWO, Value.THREE, Value.FOUR, Value.ONE);
+
+    player.addCardToHand(card1);
+    player.removeCardFromHand(card2);
+
+    List<Card> hand = player.getHand();
+    assertTrue(hand.contains(card1));
+    assertFalse(hand.contains(card2));
+  }
+
 
 }

@@ -6,11 +6,20 @@ import java.util.List;
 import controller.Features;
 import strategy.MoveStrategy;
 
+/**
+ * Class representing the AI player which makes moves based on the strategy given.
+ */
 public class AIPlayer implements Player, PlayerAction {
   private final String color;
   private final List<Card> hand;
   private final MoveStrategy strategy;
 
+  /**
+   * Constructor for the AIPlayer object.
+   *
+   * @param color    Color of the AIPLayer.
+   * @param strategy strategy that the AIPLayer is using.
+   */
   public AIPlayer(String color, MoveStrategy strategy) {
     this.color = color;
     this.hand = new ArrayList<>();
@@ -44,6 +53,7 @@ public class AIPlayer implements Player, PlayerAction {
    * @param features the Features implementation from the controller
    */
   public void setFeatures(Features features) {
+    // empty
   }
 
   @Override

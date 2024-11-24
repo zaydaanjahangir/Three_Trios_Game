@@ -1,5 +1,16 @@
-import controller.*;
-import model.*;
+import controller.CardFileReader;
+import controller.CardFileReaderImpl;
+import controller.GridFileReader;
+import controller.GridFileReaderImpl;
+import controller.ThreeTriosController;
+import model.AIPlayer;
+import model.Card;
+import model.GameModel;
+import model.Grid;
+import model.Player;
+import model.PlayerAction;
+import model.PlayerImpl;
+import model.ThreeTriosGameModel;
 import strategy.CornerStrategy;
 import strategy.FlipMaxStrategy;
 import view.ThreeTriosView;
@@ -14,7 +25,7 @@ import java.util.Random;
  */
 public class Main {
   /**
-   * Main method to run the game and can be played against PvP or PvCPU
+   * Main method to run the game and can be played against PvP or PvCPU or CPUvCPU.
    *
    * @param args command line arguments
    */

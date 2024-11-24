@@ -14,6 +14,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Player test for humans in which the user controls the moves and card placement.
+ */
 public class HumanPlayerTest {
 
 

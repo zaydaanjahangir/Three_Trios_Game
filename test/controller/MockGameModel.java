@@ -1,10 +1,17 @@
 package controller;
 
-import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import model.Card;
+import model.Cell;
+import model.GameModel;
+import model.Grid;
+import model.ModelStatusListener;
+import model.Player;
+import model.PlayerImpl;
 
 /**
  * Mock implementation of the GameModel interface for testing purposes.
@@ -15,6 +22,7 @@ public class MockGameModel implements GameModel {
   private Player currentPlayer;
   private boolean gameOver = false;
   private String winner = "";
+
   public MockGameModel() {
     this.currentPlayer = new PlayerImpl("Red");
   }
@@ -38,17 +46,17 @@ public class MockGameModel implements GameModel {
 
   @Override
   public void executeBattlePhase(int row, int col) {
-
+    // empty
   }
 
   @Override
   public void setCurrentPlayerForTest(Player player) {
-
+    // empty
   }
 
   @Override
   public void addModelStatusListener(ModelStatusListener listener) {
-
+    // empty
   }
 
   @Override

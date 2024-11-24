@@ -11,6 +11,9 @@ import model.Grid;
 import model.ModelStatusListener;
 import model.Player;
 
+/**
+ * Mock game model class used to test the player classes.
+ */
 public class MockGameModel implements GameModel {
   public List<String> methodCalls = new ArrayList<>();
 
@@ -19,6 +22,12 @@ public class MockGameModel implements GameModel {
   private boolean isLegalMoveResult = true;
   private int potentialFlipsResult = 0;
 
+  /**
+   * Mock ThreeTriosModel constructor used to test the player classes.
+   *
+   * @param currentPlayer  current player
+   * @param opponentPlayer opponenet player
+   */
   public MockGameModel(Player currentPlayer, Player opponentPlayer) {
     this.currentPlayer = currentPlayer;
   }
@@ -107,7 +116,7 @@ public class MockGameModel implements GameModel {
 
   @Override
   public void setPlayers(Player playerRed, Player playerBlue) {
-
+    // empty
   }
 
   @Override
@@ -118,27 +127,27 @@ public class MockGameModel implements GameModel {
 
   @Override
   public void executeBattlePhase(int row, int col) {
-
+    // empty
   }
 
   @Override
   public void setCurrentPlayerForTest(Player player) {
-
+    // empty
   }
 
   @Override
   public void addModelStatusListener(ModelStatusListener listener) {
-
+    // empty
   }
 
   @Override
   public void switchTurn() {
-
+    // empty
   }
 
   @Override
   public void startGame() {
-
+    // empty
   }
 
 
@@ -158,7 +167,7 @@ public class MockGameModel implements GameModel {
   @Override
   public void initializeGame(Grid grid, List<Card> cards, Random random)
           throws IllegalArgumentException {
-
+    // empty
   }
 
 }

@@ -42,7 +42,8 @@ public class ThreeTriosGameModel implements GameModel {
     int cardsPerPlayer = (totalCardCells + 1) / 2;
 
     if (playerRed == null || playerBlue == null) {
-      throw new IllegalStateException("Players not set. Use setPlayers() before initializing the game.");
+      throw new IllegalStateException("Players not set. Use setPlayers() before initializing " +
+              "the game.");
     }
 
     for (int i = 0; i < cardsPerPlayer; i++) {
@@ -67,7 +68,7 @@ public class ThreeTriosGameModel implements GameModel {
 
   @Override
   public void addModelStatusListener(ModelStatusListener listener) {
-
+    // empty
   }
 
   @Override
@@ -311,7 +312,7 @@ public class ThreeTriosGameModel implements GameModel {
 
   @Override
   public void startGame() {
-
+    // empty
   }
 
   @Override

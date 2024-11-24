@@ -1,6 +1,12 @@
 package controller;
 
-import model.*;
+
+import model.AIPlayer;
+import model.Card;
+import model.GameModel;
+import model.Player;
+import model.PlayerAction;
+import model.PlayerImpl;
 import view.ThreeTriosViewInterface;
 
 /**
@@ -55,6 +61,7 @@ public class ThreeTriosController implements Features, GameController {
     }
     selectedCard = card;
   }
+
 
   @Override
   public void cellSelected(int row, int col) {

@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import controller.Features;
 
 /**
@@ -11,7 +12,6 @@ import controller.Features;
 public class PlayerImpl implements Player, PlayerAction {
   private final String color;
   private final List<Card> hand;
-  private Features features;
 
   public PlayerImpl(String color) {
     this.color = color;
@@ -45,7 +45,7 @@ public class PlayerImpl implements Player, PlayerAction {
    * @param features the Features implementation from the controller
    */
   public void setFeatures(Features features) {
-    this.features = features;
+    // empty
   }
 
   @Override
@@ -67,7 +67,7 @@ public class PlayerImpl implements Player, PlayerAction {
 
   @Override
   public void takeTurn(GameModel model) {
-
+    // empty
   }
 }
 

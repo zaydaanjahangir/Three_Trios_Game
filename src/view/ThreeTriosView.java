@@ -32,7 +32,12 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
   private JPanel rightHandPanel;
   private CardPanel selectedCardPanel;
 
-
+  /**
+   * Constructor for the ThreeTriosView and GUI.
+   *
+   * @param model  model used for the view
+   * @param player color of the player using this view
+   */
   public ThreeTriosView(ReadOnlyGameModel model, Player player) {
     this.model = model;
     this.player = player;

@@ -1,6 +1,6 @@
 package player;
 
-import org.junit.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,17 +21,14 @@ import static org.junit.Assert.assertFalse;
 public class AIPlayerTest {
   private MockGameModel mockModel;
   private AIPlayer aiPlayer;
-  private Player opponentPlayer;
-  private Card testCard1;
-  private Card testCard2;
 
   @Before
   public void setUp() {
     aiPlayer = new AIPlayer("Blue", new FlipMaxStrategy());
-    opponentPlayer = new PlayerImpl("Red");
+    Player opponentPlayer = new PlayerImpl("Red");
     mockModel = new MockGameModel(aiPlayer, opponentPlayer);
-    testCard1 = new StandardCard("TestCard1", Value.ONE, Value.TWO, Value.THREE, Value.FOUR);
-    testCard2 = new StandardCard("TestCard1", Value.ONE, Value.TWO, Value.THREE, Value.FOUR);
+    Card testCard1 = new StandardCard("TestCard1", Value.ONE, Value.TWO, Value.THREE, Value.FOUR);
+    Card testCard2 = new StandardCard("TestCard1", Value.ONE, Value.TWO, Value.THREE, Value.FOUR);
     aiPlayer.addCardToHand(testCard1);
     aiPlayer.addCardToHand(testCard2);
   }
@@ -54,15 +51,4 @@ public class AIPlayerTest {
     // parenthesis only included in a successful place
     assertFalse(mockModel.methodCalls.contains("("));
   }
-
-  @Test
-  public void testAIPlayerChoosesMaxFlipMove() {
-
-  }
-
-  @Test
-  public void testAIPlayerWithCornerStrategy() {
-
-  }
-
 }

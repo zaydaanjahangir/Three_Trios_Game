@@ -158,13 +158,5 @@ public class ThreeTriosControllerTest {
     assertTrue(mockViewRed.methodCalls.contains("showGameOverMessage: Red"));
     assertTrue(mockViewBlue.methodCalls.contains("showGameOverMessage: Red"));
   }
-
-  /**
-   * Test placing a card with an invalid move shows an error.
-   */
-  @Test
-  public void testCellSelected_InvalidMove() {
-
-  }
 }
 

@@ -170,7 +170,7 @@ public class MockGameModel implements GameModel {
     // empty
   }
 
-  public void addPotentialFlipsResult(int flips){
+  public void addPotentialFlipsResult(int flips) {
     this.potentialFlipsResult = flips;
   }
 

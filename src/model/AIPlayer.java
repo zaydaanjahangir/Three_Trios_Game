@@ -3,21 +3,22 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.Features;
 import strategy.MoveStrategy;
 
 /**
- * Represents an AI player in the Three Trios game.
+ * Class representing the AI player which makes moves based on the strategy given.
  */
-public class AIPlayer implements Player {
+public class AIPlayer implements Player, PlayerAction {
   private final String color;
   private final List<Card> hand;
   private final MoveStrategy strategy;
 
   /**
-   * AI player constructor which creates an artificial player with a set strategy.
+   * Constructor for the AIPlayer object.
    *
-   * @param color    color of the player
-   * @param strategy chosen strategy which the player abides to
+   * @param color    Color of the AIPLayer.
+   * @param strategy strategy that the AIPLayer is using.
    */
   public AIPlayer(String color, MoveStrategy strategy) {
     this.color = color;
@@ -46,19 +47,31 @@ public class AIPlayer implements Player {
   }
 
   /**
-   * Makes a move using the assigned strategy.
+   * Set the Features interface for this player, allowing communication
+   * with the controller.
    *
-   * @param model the game model
+   * @param features the Features implementation from the controller
    */
-  public void makeMove(GameModel model) {
+  public void setFeatures(Features features) {
+    // empty
+  }
+
+  @Override
+  public void takeTurn(GameModel model) {
     Move move = strategy.determineMove(model, this);
-    if (move != null && hand.contains(move.getCard())) {
-      model.placeCard(this, move.getCard(), move.getRow(), move.getCol());
+    if (move != null) {
+      try {
+        model.placeCard(this, move.getCard(), move.getRow(), move.getCol());
+      } catch (IllegalArgumentException e) {
+        System.out.println("AIPlayer made an invalid move: " + e.getMessage());
+      } catch (IllegalStateException e) {
+        System.out.println("AIPlayer encountered a game state error: " + e.getMessage());
+      }
     } else {
-      // Handle no valid move scenario
-      System.out.println("No move was made");
+      System.out.println("AIPlayer has no valid moves.");
     }
   }
+
 
   @Override
   public boolean equals(Object obj) {
@@ -76,5 +89,4 @@ public class AIPlayer implements Player {
   public int hashCode() {
     return color.hashCode();
   }
-
 }

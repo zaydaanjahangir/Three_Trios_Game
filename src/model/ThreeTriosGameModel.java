@@ -39,10 +39,12 @@ public class ThreeTriosGameModel implements GameModel {
       System.out.println("Shuffling is currently under maintenance for testing.");
     }
 
-    this.playerRed = new PlayerImpl("Red");
-    this.playerBlue = new PlayerImpl("Blue");
     int cardsPerPlayer = (totalCardCells + 1) / 2;
 
+    if (playerRed == null || playerBlue == null) {
+      throw new IllegalStateException("Players not set. Use setPlayers() before initializing " +
+              "the game.");
+    }
 
     for (int i = 0; i < cardsPerPlayer; i++) {
       playerRed.addCardToHand(cards.get(i));
@@ -52,13 +54,22 @@ public class ThreeTriosGameModel implements GameModel {
     }
 
     this.currentPlayer = playerRed;
-    System.out.println("Initializing game with current player: " + currentPlayer.getColor());
   }
+
 
   public void setCurrentPlayerForTest(Player player) {
     this.currentPlayer = player;
   }
 
+  public void setPlayers(Player playerRed, Player playerBlue) {
+    this.playerRed = playerRed;
+    this.playerBlue = playerBlue;
+  }
+
+  @Override
+  public void addModelStatusListener(ModelStatusListener listener) {
+    // empty
+  }
 
   @Override
   public boolean isGameOver() {
@@ -102,8 +113,7 @@ public class ThreeTriosGameModel implements GameModel {
 
   @Override
   public void placeCard(Player player, Card card, int row, int col) {
-    if (player != currentPlayer) {
-      System.out.println(player);
+    if (!player.equals(currentPlayer)) {
       throw new IllegalArgumentException("It's not your turn.");
     }
 
@@ -112,18 +122,12 @@ public class ThreeTriosGameModel implements GameModel {
     }
 
     if (!player.getHand().contains(card)) {
-      throw new IllegalArgumentException("Player does not have the specified card.");
+      throw new IllegalArgumentException("You don't have that card.");
     }
 
     grid.placeCard(card, row, col, player);
     player.removeCardFromHand(card);
     executeBattlePhase(row, col);
-
-    if (currentPlayer == playerRed) {
-      currentPlayer = playerBlue;
-    } else {
-      currentPlayer = playerRed;
-    }
   }
 
   @Override
@@ -229,6 +233,7 @@ public class ThreeTriosGameModel implements GameModel {
     boolean isCurrentPlayer = player.equals(currentPlayer);  // Use equals for comparison
     boolean isOccupied = grid.getCell(row, col).isOccupied();
 
+    // debugging
     //System.out.println("isLegalMove called for player: " + player.getColor() + " at (" + row + ",
     //" + col + ")");
     //System.out.println("isPlayable: " + isPlayable + ", isCurrentPlayer: " + isCurrentPlayer + ",
@@ -300,5 +305,24 @@ public class ThreeTriosGameModel implements GameModel {
     return flips;
   }
 
+  @Override
+  public void switchTurn() {
+    currentPlayer = currentPlayer.equals(playerRed) ? playerBlue : playerRed;
+  }
+
+  @Override
+  public void startGame() {
+    // empty
+  }
+
+  @Override
+  public Player getPlayerRed() {
+    return this.playerRed;
+  }
+
+  @Override
+  public Player getPlayerBlue() {
+    return this.playerBlue;
+  }
 
 }

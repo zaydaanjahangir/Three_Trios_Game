@@ -117,4 +117,62 @@ Some key methods include: `render`, which calls helper methods to format the gri
 - **Implemented `compareAgainst` Method in `StandardCard`:**
   - Completed the comparison logic to enable the battle phase and strategy calculations.
 
+## Changes for Part 3
 
+- **Controller Redesign:**
+  - Introduced the `Features` and `PlayerAction` interfaces to modularize player interactions.
+  - Completely redesigned the `ThreeTriosController` to mediate between the model, view, and players
+  , allowing for human and AI interactions.
+  - The controller now listens to changes in the model and view and coordinates turn-based play.
+
+- **Model Enhancements:**
+  - Updated the model to include listeners (`ModelStatusListener`) that notify the controller of 
+  state changes (e.g., turn switching or game over).
+  - Added the ability to manage turns dynamically and notify players when it's their turn.
+
+- **View Updates:**
+  - Adapted the `ThreeTriosView` to handle two distinct views (one for each player) that reflect the
+  same game state.
+  - Ensured only the current player's view is interactive while the other view waits for its turn.
+  - Integrated visual feedback (e.g., highlighting selected cards) for better player experience.
+
+- **Command-Line Configuration:**
+  - Updated the `Main` method to support command-line arguments for specifying player types:
+    - `human`, `flipmaxStrategy`, or `cornerStrategy`.
+  - The game can now be configured with any combination of human and AI players, supporting diverse 
+  gameplay scenarios.
+
+## Running the Game with Command-Line Arguments
+
+To run the game, pass two arguments specifying the player types.
+
+### Usage:
+
+```bash
+java -jar ThreeTriosGame.jar <player1Type> <player2Type>
+```
+
+### Player Types:
+
+- `human`: A human-controlled player.
+- `flipmaxStrategy`: An AI player using the `FlipMaxStrategy`.
+- `cornerStrategy`: An AI player using the `CornerStrategy`.
+
+### Examples:
+
+- **Human vs. Human:**
+
+  ```bash
+  java -jar ThreeTriosGame.jar human human
+  ```
+- **Human vs. AI (FlipMaxStrategy):**
+
+  ```bash
+  java -jar ThreeTriosGame.jar human flipmaxstrategy
+  ```
+
+- **AI (CornerStrategy) vs. AI (FlipMaxStrategy):**
+
+  ```bash
+  java -jar ThreeTriosGame.jar cornerstrategy flipmaxstrategy
+  ```

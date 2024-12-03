@@ -10,87 +10,174 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controller.Features;
+import model.AIPlayer;
 import model.Card;
+import model.Cell;
+import model.Player;
 import model.ReadOnlyGameModel;
 
 /**
- * The view class of the ThreeTriosGame contributing the visual aspect via JPanel.
+ * The view class of the Three Trios game, providing the visual interface for a player.
  */
-public class ThreeTriosView {
+public class ThreeTriosView implements ThreeTriosViewInterface {
   private final ReadOnlyGameModel model;
+  private final Player player;
+  private Features features;
   private JFrame frame;
-  private Card selectedCard;
+  private JPanel gridPanel;
+  private JPanel leftHandPanel;
+  private JPanel rightHandPanel;
   private CardPanel selectedCardPanel;
 
-  public ThreeTriosView(ReadOnlyGameModel model) {
+  /**
+   * Constructor for the ThreeTriosView and GUI.
+   *
+   * @param model  model used for the view
+   * @param player color of the player using this view
+   */
+  public ThreeTriosView(ReadOnlyGameModel model, Player player) {
     this.model = model;
+    this.player = player;
     initialize();
   }
 
   private void initialize() {
-    frame = new JFrame("Three Trios Game");
+    frame = new JFrame("Three Trios Game - " + player.getColor());
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setLayout(new BorderLayout());
 
+    gridPanel = new JPanel();
+    leftHandPanel = new JPanel();
+    rightHandPanel = new JPanel();
+
+    frame.add(gridPanel, BorderLayout.CENTER);
+    frame.add(leftHandPanel, BorderLayout.WEST);
+    frame.add(rightHandPanel, BorderLayout.EAST);
+    frame.setSize(800, 600);
+    frame.setVisible(true);
+
+    updateView();
+  }
+
+  @Override
+  public void updateView() {
+    if (player == null || model == null) {
+      throw new IllegalStateException("Player or model is not properly initialized.");
+    }
+
+    String currentPlayerColor = model.getCurrentPlayer().getColor();
+    frame.setTitle("Three Trios Game - " + player.getColor() +
+            (player.getColor().equals(currentPlayerColor) ? " (Your Turn)" : " (Waiting)"));
+
+    gridPanel.removeAll();
     setupGridPanel();
+    selectedCardPanel = null;
+
+    leftHandPanel.removeAll();
+    rightHandPanel.removeAll();
     setupHandPanels();
 
-    frame.pack();
-    frame.setVisible(true);
+    frame.revalidate();
+    frame.repaint();
   }
+
 
   private void setupGridPanel() {
     int rows = model.getGrid().getRows();
     int cols = model.getGrid().getCols();
-    JPanel gridPanel = new JPanel(new GridLayout(rows, cols, 0, 0));
+    gridPanel.setLayout(new GridLayout(rows, cols, 0, 0));
+    gridPanel.setPreferredSize(new Dimension(500, 500));
 
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
         JPanel cellPanel = new JPanel();
-        cellPanel.setPreferredSize(new Dimension(150, 150));
+        cellPanel.setPreferredSize(new Dimension(100, 100));
         cellPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 1));
 
-        if (model.getGrid().getCell(row, col).isHole()) {
+        Cell cell = model.getGrid().getCell(row, col);
+        if (cell.isHole()) {
           cellPanel.setBackground(Color.GRAY);
+        } else if (cell.isOccupied()) {
+          Player owner = cell.getOwner();
+          cellPanel.setBackground(owner.getColor().equals("Red") ? Color.PINK : Color.CYAN);
+
+          Card card = cell.getCard();
+          CardPanel cardPanel = new CardPanel(card);
+          cardPanel.setOpaque(false);
+          cellPanel.add(cardPanel);
         } else {
           cellPanel.setBackground(Color.YELLOW);
-          cellPanel.addMouseListener(new CellClickListener(row, col, cellPanel));
+          if (model.getCurrentPlayer().equals(player)) {
+            cellPanel.addMouseListener(new CellClickListener(row, col));
+          }
         }
-
         gridPanel.add(cellPanel);
       }
     }
-    frame.add(gridPanel, BorderLayout.CENTER);
   }
 
+
   private void setupHandPanels() {
-    List<Card> player1 = model.getCurrentPlayer().getHand();
-    List<Card> player2 = model.getOpponentPlayer().getHand();
+    Player currentPlayer = model.getCurrentPlayer();
+    Player playerRed = model.getPlayerRed();
+    Player playerBlue = model.getPlayerBlue();
 
-    JPanel leftHandPanel = new JPanel(new GridLayout(player1.size(), 1));
-    leftHandPanel.setPreferredSize(new Dimension(100, 50 * player1.size()));
+    List<Card> playerRedHand = playerRed.getHand();
+    List<Card> playerBlueHand = playerBlue.getHand();
 
-    for (Card card : player1) {
+    // Left hand panel for red player
+    leftHandPanel.setLayout(new GridLayout(playerRedHand.size(), 1));
+    leftHandPanel.setPreferredSize(new Dimension(150, 150 * playerRedHand.size()));
+    boolean isRedTurn = currentPlayer.equals(playerRed);
+
+    for (Card card : playerRedHand) {
       CardPanel cardPanel = new CardPanel(card);
       cardPanel.setBackground(Color.PINK);
-      cardPanel.addMouseListener(new CardClickListener(card, cardPanel));
+      if (player.equals(playerRed) && isRedTurn && !(playerRed instanceof AIPlayer)) {
+        cardPanel.addMouseListener(new CardClickListener(card, cardPanel));
+      }
       leftHandPanel.add(cardPanel);
     }
-    frame.add(leftHandPanel, BorderLayout.WEST);
 
-    JPanel rightHandPanel = new JPanel(new GridLayout(player2.size(), 1));
-    rightHandPanel.setPreferredSize(new Dimension(100, 50 * player2.size()));
+    // Right hand panel for blue
+    rightHandPanel.setLayout(new GridLayout(playerBlueHand.size(), 1));
+    rightHandPanel.setPreferredSize(new Dimension(150, 150 * playerBlueHand.size()));
+    boolean isBlueTurn = currentPlayer.equals(playerBlue);
 
-    for (Card card : player2) {
+    for (Card card : playerBlueHand) {
       CardPanel cardPanel = new CardPanel(card);
       cardPanel.setBackground(Color.CYAN);
-      cardPanel.addMouseListener(new CardClickListener(card, cardPanel));
+      if (player.equals(playerBlue) && isBlueTurn && !(playerBlue instanceof AIPlayer)) {
+        cardPanel.addMouseListener(new CardClickListener(card, cardPanel));
+      }
       rightHandPanel.add(cardPanel);
     }
-    frame.add(rightHandPanel, BorderLayout.EAST);
+  }
+
+
+  @Override
+  public void addFeatures(Features features) {
+    this.features = features;
+  }
+
+  @Override
+  public void showErrorMessage(String message) {
+    javax.swing.JOptionPane.showMessageDialog(frame, message, "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+  }
+
+  @Override
+  public void showGameOverMessage(String message) {
+    javax.swing.JOptionPane.showMessageDialog(frame, message, "Game Over",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+  }
+
+  @Override
+  public void setVisible(boolean visible) {
+    frame.setVisible(visible);
   }
 
   private class CardClickListener extends MouseAdapter {
@@ -104,76 +191,32 @@ public class ThreeTriosView {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-      if (selectedCard == card) {
+      if (features != null) {
+        features.cardSelected(card);
         if (selectedCardPanel != null) {
           selectedCardPanel.setBorder(null);
         }
-        selectedCard = null;
-        selectedCardPanel = null;
-        System.out.println("Deselected card: " + card.getName());
-      } else {
-        if (selectedCardPanel != null) {
-          selectedCardPanel.setBorder(null);
-        }
-        selectedCard = card;
         selectedCardPanel = cardPanel;
-        cardPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-        System.out.println("Selected card: " + card.getName());
+        selectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
       }
     }
   }
+
 
   private class CellClickListener extends MouseAdapter {
     private final int row;
     private final int col;
-    private final JPanel cellPanel;
 
-    public CellClickListener(int row, int col, JPanel cellPanel) {
+    public CellClickListener(int row, int col) {
       this.row = row;
       this.col = col;
-      this.cellPanel = cellPanel;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-      if (selectedCard != null && cellPanel.getBackground() == Color.YELLOW) {
-        cellPanel.setBackground(selectedCardPanel.getBackground());
-        cellPanel.setLayout(new BorderLayout());
-
-        JLabel northLabel = new JLabel(String.valueOf(selectedCard.getNorthValue()), JLabel.CENTER);
-        JLabel southLabel = new JLabel(String.valueOf(selectedCard.getSouthValue()), JLabel.CENTER);
-        JLabel eastLabel = new JLabel(String.valueOf(selectedCard.getEastValue()));
-        JLabel westLabel = new JLabel(String.valueOf(selectedCard.getWestValue()));
-
-        cellPanel.add(northLabel, BorderLayout.NORTH);
-        cellPanel.add(eastLabel, BorderLayout.EAST);
-        cellPanel.add(southLabel, BorderLayout.SOUTH);
-        cellPanel.add(westLabel, BorderLayout.WEST);
-
-        cellPanel.revalidate();
-        cellPanel.repaint();
-
-        System.out.println("Placed " + selectedCard.getName() + " at (" + row + ", " + col + ")");
-
-        JPanel parentPanel = (JPanel) selectedCardPanel.getParent();
-        parentPanel.remove(selectedCardPanel);
-        parentPanel.revalidate();
-        parentPanel.repaint();
-
-        selectedCard = null;
-        selectedCardPanel = null;
-      } else if (selectedCard == null) {
-        System.out.println("No card selected.");
-      } else {
-        System.out.println("Cannot place a card here.");
+      if (features != null) {
+        features.cellSelected(row, col);
       }
     }
   }
-
-  public void setVisible(boolean visible) {
-    frame.setVisible(visible);
-  }
 }
-
-
-

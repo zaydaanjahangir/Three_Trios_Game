@@ -53,6 +53,21 @@ public interface GameModel extends ReadOnlyGameModel {
    */
   void setCurrentPlayerForTest(Player player);
 
+  /**
+   * Allows controllers or views to listen for changes in the model's state.
+   *
+   * @param listener the listener
+   */
+  void addModelStatusListener(ModelStatusListener listener);
 
+  /**
+   * Switches the turn from Red to Blue or vice-versa, notifying listeners.
+   */
+  void switchTurn();
+
+  /**
+   * Notifies the listeners that the game has started and it's the first players turn.
+   */
+  void startGame();
 }
 

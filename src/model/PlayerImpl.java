@@ -69,5 +69,11 @@ public class PlayerImpl implements Player, PlayerAction {
   public void takeTurn(GameModel model) {
     // empty
   }
+
+  @Override
+  public boolean isHuman() {
+    return true;
+  }
+
 }
 

@@ -13,7 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import controller.Features;
-import model.AIPlayer;
 import model.Card;
 import model.Cell;
 import model.Player;
@@ -136,7 +135,7 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
     for (Card card : playerRedHand) {
       CardPanel cardPanel = new CardPanel(card);
       cardPanel.setBackground(Color.PINK);
-      if (player.equals(playerRed) && isRedTurn && !(playerRed instanceof AIPlayer)) {
+      if (player.equals(playerRed) && isRedTurn && playerRed.isHuman()) {
         cardPanel.addMouseListener(new CardClickListener(card, cardPanel));
       }
       leftHandPanel.add(cardPanel);
@@ -150,7 +149,7 @@ public class ThreeTriosView implements ThreeTriosViewInterface {
     for (Card card : playerBlueHand) {
       CardPanel cardPanel = new CardPanel(card);
       cardPanel.setBackground(Color.CYAN);
-      if (player.equals(playerBlue) && isBlueTurn && !(playerBlue instanceof AIPlayer)) {
+      if (player.equals(playerBlue) && isBlueTurn && playerBlue.isHuman()) {
         cardPanel.addMouseListener(new CardClickListener(card, cardPanel));
       }
       rightHandPanel.add(cardPanel);

@@ -34,4 +34,11 @@ public interface Player {
    * @return A string representation of the color
    */
   String getColor();
+
+  /**
+   * Indicates whether the player is human.
+   *
+   * @return true if the player is human, false otherwise.
+   */
+  boolean isHuman();
 }

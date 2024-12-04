@@ -89,4 +89,10 @@ public class AIPlayer implements Player, PlayerAction {
   public int hashCode() {
     return color.hashCode();
   }
+
+  @Override
+  public boolean isHuman() {
+    return false;
+  }
+
 }

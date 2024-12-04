@@ -20,7 +20,7 @@ public interface ReadOnlyThreeTriosModel {
    * @return the winning player if the game is over
    * @throws IllegalStateException if the game has not started
    * @throws IllegalStateException if the game is not over
-   * {@link cs3500.threetrios.model.hw05.TieBreakerException}
+   * {@link provider.model.TieBreakerException}
    * @throws Exception throws a TieBreakerException if players are tied.
    */
   Player findWinner() throws Exception;

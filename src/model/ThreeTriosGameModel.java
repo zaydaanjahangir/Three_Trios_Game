@@ -1,10 +1,19 @@
 package model;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.Random;
+
+import adapters.CellAdapter;
+import adapters.GameCardAdapter;
+import adapters.GridAdapter;
+import adapters.PlayerAdapter;
+import provider.model.GameCard;
+import provider.model.PlayerColor;
+import provider.model.TieBreakerException;
 
 
 /**
@@ -13,7 +22,7 @@ import java.util.Random;
  * Class Invariant: The number of cards in play plus the number of cards in players' hands
  * always equals the total number of card cells on the grid.
  */
-public class ThreeTriosGameModel implements GameModel {
+public class ThreeTriosGameModel implements GameModel, provider.model.ReadOnlyThreeTriosModel {
 
   private Grid grid;
   private Player playerRed;
@@ -75,6 +84,135 @@ public class ThreeTriosGameModel implements GameModel {
   public boolean isGameOver() {
     return grid.isFull();
   }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////
+  @Override
+  public provider.model.Player findWinner() throws Exception {
+    if (!isGameOver()) {
+      throw new Exception("Game is not over yet.");
+    }
+
+    String winner = getWinner();
+
+    if (winner.contains("Red wins!")) {
+      return new PlayerAdapter(getPlayerRed());
+    } else if (winner.contains("Blue wins!")) {
+      return new PlayerAdapter(getPlayerBlue());
+    } else {
+       throw new TieBreakerException("It's a tie!");
+    }
+  }
+
+  @Override
+  public String getCellToString(int row, int col) {
+    Cell cell = getCellAt(row, col);
+    if (cell.isHole()) {
+      return " "; // Hole
+    } else if (cell.isOccupied()) {
+      Player owner = cell.getOwner();
+      return owner.getColor().equals("Red") ? "R" : "B";
+    } else {
+      return "_"; // Empty cell
+    }
+  }
+
+  @Override
+  public String handToString() {
+    StringBuilder sb = new StringBuilder();
+    List<Card> hand = getCurrentPlayer().getHand();
+    for (Card card : hand) {
+      sb.append(card.toString()).append("\n");
+    }
+    return sb.toString();
+  }
+
+  @Override
+  public provider.model.Player currentTurn() {
+    return new PlayerAdapter(getCurrentPlayer());
+  }
+
+  @Override
+  public int numRows() {
+    return this.getGridRows();
+  }
+
+  @Override
+  public int numColumns() {
+    return this.getGridCols();
+  }
+
+  @Override
+  public provider.model.Grid returnGridCopy() {
+    return new GridAdapter(getGrid());
+  }
+
+  @Override
+  public provider.model.Cell returnCell(int row, int col) {
+    Cell cell = getCellAt(row, col);
+    return  new CellAdapter(cell);
+  }
+
+  @Override
+  public List<GameCard> returnPlayerHand(PlayerColor color) {
+    Player player = (color == PlayerColor.RED) ? getPlayerRed() : getPlayerBlue();
+    List<Card> hand = player.getHand();
+    List<GameCard> gameCards = new ArrayList<>();
+    for (Card card : hand) {
+      gameCards.add(new GameCardAdapter(card));
+    }
+    return gameCards;
+  }
+
+  @Override
+  public int calculateScore(PlayerColor color) {
+    Player player = (color == PlayerColor.RED) ? getPlayerRed() : getPlayerBlue();
+    return getPlayerScore(player);
+  }
+
+  @Override
+  public int howManyCardsCanBeFlipped(GameCard gameCard, int row, int col, PlayerColor color) {
+    Player player = (color == PlayerColor.RED) ? getPlayerRed() : getPlayerBlue();
+    Card card = adaptGameCardToCard(gameCard);
+    return getPotentialFlips(player, card, row, col);
+  }
+
+  private Card adaptGameCardToCard(provider.model.GameCard gameCard) {
+    model.Value north = adaptValue(gameCard.north());
+    model.Value south = adaptValue(gameCard.south());
+    model.Value east = adaptValue(gameCard.east());
+    model.Value west = adaptValue(gameCard.west());
+    String name = gameCard.toString();
+    return new StandardCard(name, north, south, east, west);
+  }
+
+  private model.Value adaptValue(int value) {
+    switch (value) {
+      case 1:
+        return Value.ONE;
+      case 2:
+        return Value.TWO;
+      case 3:
+        return Value.THREE;
+      case 4:
+        return Value.FOUR;
+      case 5:
+        return Value.FIVE;
+      case 6:
+        return Value.SIX;
+      case 7:
+        return Value.SEVEN;
+      case 8:
+        return Value.EIGHT;
+      case 9:
+        return Value.NINE;
+      case 10:
+        return Value.A;
+      default:
+        throw new IllegalArgumentException("Invalid value");
+    }
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////
 
   @Override
   public String getWinner() {

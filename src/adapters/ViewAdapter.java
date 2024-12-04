@@ -6,6 +6,13 @@ import view.ThreeTriosViewInterface;
 
 public class ViewAdapter implements ThreeTriosViewInterface {
   private final ThreeTriosGUIView providerView;
+
+
+  public ViewAdapter(ThreeTriosGUIView providerView, Features features){
+    this.providerView = providerView;
+
+
+  }
   @Override
   public void addFeatures(Features features) {
 

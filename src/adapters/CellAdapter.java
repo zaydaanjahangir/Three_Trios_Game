@@ -14,9 +14,14 @@ import provider.model.PlayerColor;
 
 public class CellAdapter implements provider.model.Cell {
   private final Cell cell;
+  private final int row;
+  private final int col;
 
-  public CellAdapter(Cell cell) {
+
+  public CellAdapter(Cell cell, int row, int col) {
     this.cell = cell;
+    this.row = row;
+    this.col = col;
   }
 
 
@@ -65,7 +70,7 @@ public class CellAdapter implements provider.model.Cell {
 
   @Override
   public provider.model.Cell returnCell() {
-    return new CellAdapter(cell);
+    return new CellAdapter(cell, row, col);
   }
 
   @Override
@@ -81,12 +86,12 @@ public class CellAdapter implements provider.model.Cell {
 
   @Override
   public int row() {
-    // Our cell doesn't have a row
+    return this.row;
   }
 
   @Override
   public int col() {
-    // Our cell doesn't have a column
+    return this.col;
   }
 
   @Override

@@ -60,13 +60,21 @@ public class GridAdapter implements provider.model.Grid {
 
   @Override
   public String getCellToString(int row, int col) {
-    return grid.getCellToString(row, col);
+    model.Cell cell = grid.getCell(row, col);
+    if (cell.isHole()) {
+      return " ";
+    } else if (cell.isOccupied()) {
+      String color = cell.getOwner().getColor();
+      return color.equals("Red") ? "R" : "B";
+    } else {
+      return "_";
+    }
   }
 
   @Override
   public Cell returnCell(int row, int col) {
     model.Cell cell = grid.getCell(row, col);
-    return new CellAdapter(cell);
+    return new CellAdapter(cell, row, col);
   }
 
   @Override
@@ -87,7 +95,19 @@ public class GridAdapter implements provider.model.Grid {
 
   @Override
   public List<Cell> cardCellList() {
-    //
+    List<provider.model.Cell> cardCells = new ArrayList<>();
+    int numRows = grid.getRows();
+    int numCols = grid.getCols();
+
+    for (int row = 0; row < numRows; row++) {
+      for (int col = 0; col < numCols; col++) {
+        model.Cell cell = grid.getCell(row, col);
+        if (!cell.isHole()) {
+          cardCells.add(new CellAdapter(cell, row, col));
+        }
+      }
+    }
+    return cardCells;
   }
 
   @Override

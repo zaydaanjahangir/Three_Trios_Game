@@ -1,3 +1,4 @@
+import adapters.ViewAdapter;
 import controller.CardFileReader;
 import controller.CardFileReaderImpl;
 import controller.GridFileReader;
@@ -10,7 +11,10 @@ import model.Grid;
 import model.Player;
 import model.PlayerAction;
 import model.PlayerImpl;
+import model.ReadOnlyGameModel;
 import model.ThreeTriosGameModel;
+import provider.model.ReadOnlyThreeTriosModel;
+import provider.view.BluePlayerView;
 import strategy.CornerStrategy;
 import strategy.FlipMaxStrategy;
 import view.ThreeTriosView;
@@ -30,6 +34,8 @@ public class Main {
    * @param args command line arguments
    */
   public static void main(String[] args) {
+
+    // SETUP
     if (args.length != 2) {
       // error handling for wrong arguments
       System.out.println("Usage: java Main <player1Type> <player2Type>");
@@ -45,7 +51,10 @@ public class Main {
     CardFileReader cardReader = new CardFileReaderImpl();
     List<Card> cards = cardReader.readCards(new File(cardConfigPath));
 
-    GameModel model = new ThreeTriosGameModel();
+
+    // Game Customization
+    ThreeTriosGameModel model = new ThreeTriosGameModel();
+    ReadOnlyThreeTriosModel readModel = new ThreeTriosGameModel();
     PlayerAction playerRed = createPlayer("Red", args[0]);
     PlayerAction playerBlue = createPlayer("Blue", args[1]);
 
@@ -53,12 +62,18 @@ public class Main {
     model.initializeGame(grid, cards, random);
 
     ThreeTriosViewInterface viewRed = new ThreeTriosView(model, (Player) playerRed);
-    ThreeTriosViewInterface viewBlue = new ThreeTriosView(model, (Player) playerBlue);
+
+    BluePlayerView providerBlueView = new BluePlayerView(model);
+    ThreeTriosViewInterface viewBlue = new ViewAdapter(providerBlueView);
+
     ThreeTriosController controllerRed = new ThreeTriosController(
             model, playerRed, (Player) playerRed, viewRed, viewBlue, (PlayerAction) playerBlue);
 
     ThreeTriosController controllerBlue = new ThreeTriosController(
             model, playerBlue, (Player) playerBlue, viewBlue, viewRed, (PlayerAction) playerRed);
+
+    viewRed.addFeatures(controllerRed);
+    viewRed.addFeatures(controllerBlue);
 
     model.startGame();
     viewRed.setVisible(true);

@@ -17,7 +17,8 @@ import view.ThreeTriosViewInterface;
 /**
  * Controller class that delegates between the model and the view for a specific player.
  */
-public class ThreeTriosController implements Features, GameController, provider.controller.ThreeTriosController {
+public class ThreeTriosController implements Features, GameController,
+        provider.controller.ThreeTriosController {
   private final GameModel model;
   private final PlayerAction playerAction;
   private final Player playerModel;
@@ -45,6 +46,7 @@ public class ThreeTriosController implements Features, GameController, provider.
     this.ownView = ownView;
     this.otherView = otherView;
     this.opponentPlayerAction = opponentPlayerAction;
+
 
     this.ownView.addFeatures(this);
     if (playerAction instanceof PlayerImpl) {
@@ -187,5 +189,4 @@ public class ThreeTriosController implements Features, GameController, provider.
   public void actionPerformed(ActionEvent e) {
     // Not used in our implementation
   }
-
 }

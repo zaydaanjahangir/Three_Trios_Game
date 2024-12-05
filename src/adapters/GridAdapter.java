@@ -1,11 +1,10 @@
 package adapters;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.Card;
-import model.CellType;
 import model.Grid;
 import model.Player;
 import model.PlayerImpl;
@@ -14,9 +13,17 @@ import model.Value;
 import provider.model.Cell;
 import provider.model.GameCard;
 
+/**
+ * Grid adapter class to adapt the prociders' grid to ours.
+ */
 public class GridAdapter implements provider.model.Grid {
   private final Grid grid;
 
+  /**
+   * Constructor for the GridAdpater class.
+   *
+   * @param grid grid
+   */
   public GridAdapter(Grid grid) {
     this.grid = grid;
   }

@@ -1,17 +1,26 @@
 package adapters;
 
 import java.awt.Color;
+
 import model.Card;
 import model.Player;
 import model.PlayerImpl;
-import model.Value;
 import provider.model.Direction;
 import provider.model.GameCard;
 
+/**
+ * Adapter class to adapt the providers' GameCard into our StandardCard.
+ */
 public class GameCardAdapter implements GameCard {
   private final Card card;
   private Player owner;
 
+  /**
+   * GameCard Adapter constructor.
+   *
+   * @param card  card to be adapted
+   * @param owner player
+   */
   public GameCardAdapter(Card card, Player owner) {
     this.card = card;
     this.owner = owner;

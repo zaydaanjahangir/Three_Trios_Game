@@ -1,5 +1,6 @@
 package provider.view;
 
+
 import javax.swing.*;
 
 import provider.model.ReadOnlyThreeTriosModel;

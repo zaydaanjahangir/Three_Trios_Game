@@ -1,6 +1,7 @@
 package adapters;
 
-import java.awt.*;
+
+import java.awt.Color;
 
 import model.Card;
 import model.Cell;
@@ -10,14 +11,23 @@ import model.StandardCard;
 import model.Value;
 import provider.model.Direction;
 import provider.model.GameCard;
-import provider.model.PlayerColor;
 
+/**
+ * Adapter class for cell to adapt provider cell to ours.
+ */
 public class CellAdapter implements provider.model.Cell {
   private final Cell cell;
   private final int row;
   private final int col;
 
 
+  /**
+   * Constructor for cell adapter class.
+   *
+   * @param cell cell
+   * @param row  row index
+   * @param col  col index
+   */
   public CellAdapter(Cell cell, int row, int col) {
     this.cell = cell;
     this.row = row;
@@ -139,6 +149,7 @@ public class CellAdapter implements provider.model.Cell {
         throw new IllegalArgumentException("Invalid value");
     }
   }
+
   private Player adaptColorToPlayer(Color color) {
     String playerColor = color.equals(Color.RED) ? "Red" : "Blue";
     return new PlayerImpl(playerColor);

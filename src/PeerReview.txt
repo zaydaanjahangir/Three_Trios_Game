@@ -1,0 +1,26 @@
+Code Review
+Design Critique
+The provider’s code has a solid setup for keeping things modular with interfaces like ThreeTriosController and ReadOnlyThreeTriosModel. It’s clear they thought about separation of concerns between the model, view, and controller. But honestly, it feels like they boxed themselves in a bit. For example, the controller is locked into ActionEvent inputs, which makes it tough to adapt to other input types (like a text-based CLI or online play). Same deal with the views, BluePlayerView and RedPlayerView are hardwired in without much wiggle room for customization or new types of views, or rules variants with more than two players.
+Implementation Critique
+The code is clean for the most part, but there’s some mixing of responsibilities, especially in the views. Methods like reflectNewChanges() and swapTurn() don’t just update the UI they also have some which can get tricky because if the logic isn’t perfectly in sync with the model there can be bugs. Plus, there’s a lot of mutable state being handled directly (e.g., updateHand() messes with buttons on the fly, which can cause issues if updates aren’t done in one go.
+Documentation Critique
+The javadoc for the methods are very helpful and cover almost every method. There’s docs for every case of an exception, the different parameters, return types etc. We never had any issues in understanding a method because there was always clear documentation on what a method does. One way to make it even better (not required) would be documentation on how everything ties together, the readme does a great job, but little notes on how certain methods interact with each other would make it even better.
+
+Design/Code Limitations & Suggestions
+Rigid Interfaces:
+
+
+ThreeTriosController forces everything to go through ActionEvent, which makes it a pain to plug in different input types.
+Fix: Use a more generic UserAction interface that can handle different kinds of inputs, not just Swing events.
+Turn Management Issues:
+
+
+Views like RedPlayerView and BluePlayerView manage their own turn states. This can lead to weird situations if one view gets out of step with the model.
+Fix: Let the model handle turns and broadcast events to the views so they always stay in sync.
+Too Much Mutability:
+
+
+The direct updates to UI elements, like in updateHand(), make the state fragile and prone to bugs.
+Fix: Use a system where the model sends snapshots of the current state, and the views just render that instead of piecing things together on their own.
+Conclusion
+Despite the critiques the provider’s code code was simple and easy to use for our use case. With the ample amount of documentation and clearly stated method/variable names working with their code was a breeze. We didn’t have to request any changes from them as everything worked for us right out of the box. The main roadblocks we had was figuring our how to navigate some of their features that we didn’t have like their neighbor system and the differing Cell/Grid designs. After adapting those parts, getting the view working was straightforward. From the customer standpoint the code was great to work with and there were very few issues with their code that affected our progress.

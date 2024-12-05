@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import javax.swing.*;
 
 import provider.controller.ThreeTriosController;
@@ -27,8 +28,9 @@ public class HandPanel extends JPanel {
 
   /**
    * Constructs a HandPanel object that takes in a color and a list of GameCard, the hand.
+   *
    * @param color the color to draw the cards in
-   * @param hand the list of GameCard representing the hand of the player
+   * @param hand  the list of GameCard representing the hand of the player
    */
   public HandPanel(PlayerColor currentPlayerColor, PlayerColor color, List<GameCard> hand) {
     // Creating a grid layout of four rows and one column.
@@ -48,8 +50,9 @@ public class HandPanel extends JPanel {
 
   /**
    * Adds buttons to the cards in the hand.
+   *
    * @param color the color of the player.
-   * @param hand the cards in the players hand currently.
+   * @param hand  the cards in the players hand currently.
    */
   private void addButtons(PlayerColor color, List<GameCard> hand) {
     for (GameCard card : hand) {
@@ -75,8 +78,7 @@ public class HandPanel extends JPanel {
         cardButton.setEnabled(true);
         // Add listener for card selection
         cardButton.addActionListener(e -> handleCardSelection(cardButton, card, hand, color));
-      }
-      else {
+      } else {
         // Disable the button when it's not the player's turn
         cardButton.setEnabled(false);
         cardButton.updateSelectionEmptyCard(card, this.currentPlayerColor); // Deselect if necessary
@@ -86,6 +88,7 @@ public class HandPanel extends JPanel {
 
   /**
    * Updates the hand when a card has been played.
+   *
    * @param cards list of updated cards in the hand.
    */
   public void updateHand(List<GameCard> cards) {
@@ -124,6 +127,7 @@ public class HandPanel extends JPanel {
 
   /**
    * Adds the listener to the features of this model.
+   *
    * @param listener the asynchronous listener for this panel.
    */
   public void addClickListener(ThreeTriosController listener) {
@@ -140,8 +144,7 @@ public class HandPanel extends JPanel {
     System.out.println("Turn swapped. It's now " + this.turn);
     if (this.currentPlayerColor.toString().equals(PlayerColor.RED.toString())) {
       this.currentPlayerColor = PlayerColor.BLUE;
-    }
-    else {
+    } else {
       this.currentPlayerColor = PlayerColor.RED;
     }
     System.out.println("Current player:" + this.currentPlayerColor);

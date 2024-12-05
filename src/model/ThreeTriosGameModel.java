@@ -99,7 +99,7 @@ public class ThreeTriosGameModel implements GameModel, provider.model.ReadOnlyTh
     } else if (winner.contains("Blue wins!")) {
       return new PlayerAdapter(getPlayerBlue());
     } else {
-       throw new TieBreakerException("It's a tie!");
+      throw new TieBreakerException("It's a tie!");
     }
   }
 
@@ -149,7 +149,7 @@ public class ThreeTriosGameModel implements GameModel, provider.model.ReadOnlyTh
   @Override
   public provider.model.Cell returnCell(int row, int col) {
     Cell cell = getCellAt(row, col);
-    return  new CellAdapter(cell, row, col);
+    return new CellAdapter(cell, row, col);
   }
 
   @Override
@@ -158,7 +158,7 @@ public class ThreeTriosGameModel implements GameModel, provider.model.ReadOnlyTh
     List<Card> hand = player.getHand();
     List<GameCard> gameCards = new ArrayList<>();
     for (Card card : hand) {
-      gameCards.add(new GameCardAdapter(card,player));
+      gameCards.add(new GameCardAdapter(card, player));
     }
     return gameCards;
   }

@@ -1,6 +1,7 @@
 package provider.model;
 
-import java.awt.*;
+
+import java.awt.Color;
 
 /**
  * Represents a Cell in a ThreeTriosGame. Each Cell might have its own specific behavior depending

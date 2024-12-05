@@ -1,6 +1,5 @@
 package adapters;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +10,15 @@ import provider.model.GameCard;
 import provider.model.PlayerColor;
 import model.Card;
 
+/**
+ * Player adapter class to adapt the providers player to ours.
+ */
 public class PlayerAdapter implements provider.model.Player {
   private final model.Player player;
 
+  /**
+   * Construtor for the PlayerAdapter class.
+   */
   public PlayerAdapter(model.Player player) {
     this.player = player;
   }
@@ -58,7 +63,7 @@ public class PlayerAdapter implements provider.model.Player {
     if (validateCardInHandIdx(cardInHandIdx)) {
       Card card = player.getHand().get(cardInHandIdx);
       player.removeCardFromHand(card);
-      return new GameCardAdapter(card,player);
+      return new GameCardAdapter(card, player);
     } else {
       throw new IndexOutOfBoundsException("Invalid card index");
     }

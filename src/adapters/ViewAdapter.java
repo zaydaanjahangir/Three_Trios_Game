@@ -1,13 +1,20 @@
 package adapters;
 
-import provider.controller.ThreeTriosController;
 import provider.view.BluePlayerView;
 import view.ThreeTriosViewInterface;
 import controller.Features;
 
+/**
+ * View Adapter class that makes the provider views compatible with our controller.
+ */
 public class ViewAdapter implements ThreeTriosViewInterface {
   private final BluePlayerView providerView;
 
+  /**
+   * Constructor for the ViewAdapter class.
+   *
+   * @param providerView provider view
+   */
   public ViewAdapter(BluePlayerView providerView) {
     this.providerView = providerView;
   }

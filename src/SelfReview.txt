@@ -1,0 +1,24 @@
+What do you wish you had done differently in your design/implementation? Did you learn any lessons
+ from the code given to you, or the updates you had to make for your customers?
+
+ I wish we had done more planning on extensibility, we focused a lot more on getting the present
+ version of our code working with some extensibility in mind. I think we did plan out reasonably
+ and avoided major refactors, with last assignment it went a little haywire because we
+ didn't have any existing infrastructure to build off of and that reflected a bit in this hw.
+
+ The code from our providers showed us the different routes we could have gone with our code, we
+ also learned that a lot of times with providers its luck based. We were fortunate to have providers
+ with similar design structure to ours, which is why the differences they had were cool to see
+ because we could have gone in that route and achieved a similar effect. We didn't need any updates
+ from our providers everything worked the fist time around thankfully.
+
+ Our customers were also very accomodating, they only needed one small fix and apart from that they
+ were all set. The fix that they required however, taught me about the importance of abstraction
+ and interface. Because we used a concrete class in our view they weren't able to access we had to
+ rewrite some lines to abstract our view and make it rely on interfaces rather than concrete classes
+
+ What was your experience like with your providers?
+
+ Very positive experience since we didn't have to contact them at all apart from the intial code
+ handoff. Based on our peers' experience we were very fortunate to have a smooth experience so we
+ are grateful that they had design choices similar to ours.

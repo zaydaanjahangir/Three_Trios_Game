@@ -176,3 +176,29 @@ java -jar ThreeTriosGame.jar <player1Type> <player2Type>
   ```bash
   java -jar ThreeTriosGame.jar cornerstrategy flipmaxstrategy
   ```
+
+
+## Updates for HW8
+
+### Features Successfully Implemented
+- **Views**:
+  - Both our custom view and the provider's graphical views (`RedPlayerView` and `BluePlayerView`) 
+  work as expected, rendering the game state correctly. 
+  - The views dynamically reflect game progress, including grid updates, hand updates, and player 
+  turn changes.
+
+- **Game Logic**:
+  - The core game mechanics, including card placement, flipping opponent cards, turn switching, and 
+  determining the game winner, are fully functional.
+  - Custom configurations for the grid and cards load successfully, ensuring flexible gameplay 
+  setups.
+
+### Features Not Working
+- **Turn Desynchronization in Provider’s View**:
+  - **Error**: The provider’s view sometimes shows "It's not your turn" even when a valid move is 
+  made.
+  - **Cause**: This issue arises because the provider's code manages turn notifications 
+  inconsistently. The views don’t always re-enable interactions for the active player after a 
+  turn switch, leading to desynchronization with the model.
+  - **Fix (not implemented)**: Refactor the provider’s views to rely entirely on the model’s 
+  notifications for turn changes instead of maintaining local state.

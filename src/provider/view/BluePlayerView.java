@@ -1,9 +1,14 @@
 package provider.view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 
 import provider.controller.ThreeTriosController;
 import provider.model.GameCard;

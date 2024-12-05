@@ -1,6 +1,6 @@
 package provider.model;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.List;
 
 /**
